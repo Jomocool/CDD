@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CDD</string>
+    <string name="title_activity_login_interface">LoginInterfaceActivity</string>
 </resources>

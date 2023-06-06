@@ -35,28 +35,15 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="40dp"/>
 
-    <!-- 登录按钮 -->
+    <!-- 注册按钮 -->
     <Button
-        android:id="@+id/button_login"
+        android:id="@+id/button_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="登录"
-        android:onClick="click_login"
+        android:text="注册"
         android:layout_below="@id/edit_password"
         android:layout_marginStart="40dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="40dp"/>
-
-    <!-- 注册链接 -->
-    <TextView
-        android:id="@+id/text_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="没有账号？注册"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="14sp"
-        android:layout_below="@id/button_login"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"/>
 
 </RelativeLayout>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/image_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/login_interface" />
+
+
+    <!--退出按钮-->
+
+    <Button
+        android:id="@+id/button_login"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="25dp"
+        android:backgroundTint="#4CAF50"
+        android:onClick="click_login"
+        android:text="登录"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/button_register"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/button_login"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="260dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="#4CAF50"
+        android:onClick="click_register"
+        android:text="注册"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/button_exit"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/button_register"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="#4CAF50"
+        android:onClick="click_exit"
+        android:text="退出"
+        android:textSize="24sp" />
+
+</RelativeLayout>

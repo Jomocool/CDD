@@ -12,16 +12,35 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CDD"
         tools:targetApi="31">
+
+        <!--默认的activity-->
         <activity
-            android:name=".MainActivity"
-            android:screenOrientation="landscape"
-            android:exported="true">
+            android:name=".BeforeGaming.UI.StartInterfaceActivity"
+            android:exported="true"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--登录界面的Activity-->
+        <activity
+            android:name=".BeforeGaming.UI.LoginInterfaceActivity">
+        </activity>
+
+        <!--注册界面的Activity-->
+        <activity
+            android:name=".BeforeGaming.UI.RegisterInterfaceActivity">
+        </activity>
+
+        <!--游戏主界面的Activity-->
+        <activity
+            android:name=".Game.UI.GamingInterfaceActivity"
+            android:screenOrientation="landscape">
+        </activity>
+
     </application>
 
 </manifest>
