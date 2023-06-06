@@ -14,7 +14,7 @@
 
     <!-- 用户名输入框 -->
     <EditText
-        android:id="@+id/edit_username"
+        android:id="@+id/edit_username2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="请输入用户名"
@@ -25,37 +25,38 @@
 
     <!-- 密码输入框 -->
     <EditText
-        android:id="@+id/edit_password"
+        android:id="@+id/edit_password2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="请输入密码"
         android:inputType="textPassword"
-        android:layout_below="@id/edit_username"
+        android:layout_below="@id/edit_username2"
         android:layout_marginStart="40dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="40dp"/>
 
     <!-- 登录按钮 -->
     <Button
-        android:id="@+id/button_login"
+        android:id="@+id/button_login2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="登录"
-        android:onClick="click_login"
-        android:layout_below="@id/edit_password"
+        android:layout_below="@id/edit_password2"
         android:layout_marginStart="40dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="40dp"/>
+        android:layout_marginEnd="40dp"
+        android:backgroundTint="@color/blue"
+        android:onClick="click_login2"
+        android:text="登录" />
 
     <!-- 注册链接 -->
     <TextView
-        android:id="@+id/text_register"
+        android:id="@+id/text_register2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="没有账号？注册"
         android:textColor="@android:color/darker_gray"
         android:textSize="14sp"
-        android:layout_below="@id/button_login"
+        android:layout_below="@id/button_login2"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"/>
 
