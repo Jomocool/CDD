@@ -9,13 +9,13 @@ import java.util.Collections;
 //游戏的主要运行过程
 public class GameTurn {
 
-    Player player1=new Player("玩家1");
-    Player player2=new Player("玩家2");
-    Player player3=new Player("玩家3");
-    Player player4=new Player("玩家4");
+    public Player player1=new Player("玩家1");
+    public Player player2=new Player("玩家2");
+    public Player player3=new Player("玩家3");
+    public Player player4=new Player("玩家4");
 
     //构造函数，初始时为每位玩家发牌,并正常排序玩家的牌
-    GameTurn()
+    public GameTurn()
     {
         shuffle_cards();;
         deal_cards();
