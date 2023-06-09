@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@mipmap/gaming_interface">
 
-    <!--玩家1的牌容器-->
     <LinearLayout
         android:id="@+id/playerCardsContainer"
         android:layout_width="wrap_content"
@@ -14,15 +13,57 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:gravity="bottom"
+
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent">
     </LinearLayout>
 
-
-    <!--出牌按钮和过按钮-->
     <LinearLayout
+        android:id="@+id/player4CardsContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="110dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:gravity="top"
+
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/player2CardsContainer"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.498">
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/player3CardsContainer"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.498">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
