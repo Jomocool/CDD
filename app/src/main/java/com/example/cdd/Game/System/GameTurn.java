@@ -9,6 +9,7 @@ import java.util.Collections;
 //游戏的主要运行过程
 public class GameTurn {
 
+    //四位玩家
     public Player player1=new Player("玩家1");
     public Player player2=new Player("玩家2");
     public Player player3=new Player("玩家3");
