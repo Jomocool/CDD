@@ -1,10 +1,8 @@
 package com.example.cdd.Game.UI;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -43,14 +41,20 @@ public class GamingInterfaceActivity extends AppCompatActivity {
         for(int i=0;i<player.getArrayList().size();i++)
         {
             ImageView imageView=new ImageView(this);
+            //设置一张牌图片的属性
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            imageView.setMaxWidth(180);
+            imageView.setMaxWidth(160);
             imageView.setAdjustViewBounds(true);
-            imageView.setImageResource(R.mipmap.club10);
+
+            //添加资源图片
+            String image_name="card"+player.getArrayList().get(i);
+            int resourceId =getResources().getIdentifier(image_name,"mipmap",getPackageName());
+            imageView.setImageResource(resourceId);
             addToLinearLayout(imageView,layout);
         }
     }
 
+    //将dp转换成像素大小
     public int dpTOpx(int Dp)
     {
         float density = getResources().getDisplayMetrics().density;
