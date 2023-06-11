@@ -6,14 +6,21 @@ import java.util.Comparator;
 
 public class CardGroup {
     //当前牌组的牌
-    public ArrayList<Integer> cards;
+    ArrayList<Integer> cards;
     //牌型
-    public PokerType type;
+    PokerType type;
     //最大单牌
-    public int maxCard;
+    int maxCard;
+
+    //默认构造函数
+    public CardGroup(){
+        cards=new ArrayList<Integer>();
+        type=PokerType.cError;
+        maxCard=0;
+    }
 
     //构造函数，传入选中的牌，并判断牌型
-    CardGroup(ArrayList<Integer> selectedCards) {
+    public CardGroup(ArrayList<Integer> selectedCards) {
         cards = selectedCards;
         //排序牌组，方便比大小
         Collections.sort(cards, new Comparator<Integer>() {
@@ -174,6 +181,30 @@ public class CardGroup {
 
     public boolean is34562(ArrayList<Integer>arr){
         return arr.get(0)==3&&arr.get(1)==4&&arr.get(2)==5&&arr.get(3)==6&&arr.get(4)==15;
+    }
+
+    public ArrayList<Integer> getCards() {
+        return cards;
+    }
+
+    public int getMaxCard() {
+        return maxCard;
+    }
+
+    public PokerType getType() {
+        return type;
+    }
+
+    public void setCards(ArrayList<Integer> cards) {
+        this.cards = cards;
+    }
+
+    public void setMaxCard(int maxCard) {
+        this.maxCard = maxCard;
+    }
+
+    public void setType(PokerType type) {
+        this.type = type;
     }
 }
 
