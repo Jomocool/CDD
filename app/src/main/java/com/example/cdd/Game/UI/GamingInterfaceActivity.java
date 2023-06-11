@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.cdd.Game.Domain.CardGroup;
 import com.example.cdd.Game.Domain.Player;
 import com.example.cdd.Game.System.GameTurn;
 import com.example.cdd.R;
@@ -175,6 +176,8 @@ public class GamingInterfaceActivity extends AppCompatActivity {
     }
 
     public void click_play_cards(View view) {
+        CardGroup cardGroup=new CardGroup(game_turn.player1.getSelected_Cards());
+
 
     }
 }
