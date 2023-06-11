@@ -13,7 +13,7 @@ public class Player
     ArrayList<Integer> cards_list=new ArrayList<>();
 
     //选中的牌
-    ArrayList<Integer>selected_Cards;
+    ArrayList<Integer>selectedCards=new ArrayList<>();
 
     //选择操作 0:pass 1:出牌
     int operator;
@@ -76,8 +76,8 @@ public class Player
 
     //删除打出去的牌
     public void delete_SelectedCards(){
-        for(int i=0;i<selected_Cards.size();i++){
-            cards_list.remove(selected_Cards.get(i));
+        for(int i=0;i<selectedCards.size();i++){
+            cards_list.remove(selectedCards.get(i));
         }
     }
 
@@ -98,12 +98,12 @@ public class Player
 
     //选牌，鼠标点到哪张牌，就加入哪张牌，传入参数为下标
     public void select_Card(int card){
-        selected_Cards.add(card);
+        selectedCards.add(card);
     }
 
     //删去所选牌
     public void delete_Card(int card){
-        selected_Cards.remove(card);
+        selectedCards.remove(card);
     }
 
     public int getOperator() {
@@ -114,7 +114,7 @@ public class Player
         this.operator=operator;
     }
 
-    public ArrayList<Integer> getSelected_Cards() {
-        return selected_Cards;
+    public ArrayList<Integer> getSelectedCardsArrayList() {
+        return selectedCards;
     }
 }

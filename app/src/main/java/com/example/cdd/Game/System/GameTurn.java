@@ -1,5 +1,7 @@
 package com.example.cdd.Game.System;
 
+import android.media.MediaParser;
+
 import com.example.cdd.Game.Domain.CardGroup;
 import com.example.cdd.Game.Domain.Cards;
 import com.example.cdd.Game.Domain.Player;
@@ -20,9 +22,14 @@ public class GameTurn {
     public RobotPlayer player4=new RobotPlayer("人机4");
 
     //记录上一位玩家的牌
-    ArrayList<Integer> LastPlayerCard=new ArrayList<>();
+    ArrayList<Integer> LastPlayerCards=new ArrayList<>();
 
-    CardGroup currentGroup;
+    //返回上一位玩家的牌数组
+    public ArrayList<Integer> getLastPlayerCardsArrayList()
+    {
+        return LastPlayerCards;
+    }
+
 
     //构造函数，初始时为每位玩家发牌,并正常排序玩家的牌
     public GameTurn()

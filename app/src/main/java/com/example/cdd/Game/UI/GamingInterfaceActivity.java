@@ -5,11 +5,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cdd.Game.Domain.CardGroup;
 import com.example.cdd.Game.Domain.Player;
+import com.example.cdd.Game.Rule.CDDGameRule;
 import com.example.cdd.Game.System.GameTurn;
 import com.example.cdd.R;
 
@@ -83,19 +85,19 @@ public class GamingInterfaceActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v)
                 {
-                    //取消选中
+                    //选中
                     if(!card_image.get_isSelected())
                     {
                         card_image.select();
                         card_image.offsetTopAndBottom(-20);
-                        game_turn.player1.getSelected_Cards().remove(card_image.getSerial_number());
+                        game_turn.player1.getSelectedCardsArrayList().add(card_image.getSerial_number());
                     }
-                    //选中
+                    //取消选中
                     else
                     {
                         card_image.cancel_select();
                         card_image.offsetTopAndBottom(20);
-                        game_turn.player1.getSelected_Cards().add(card_image.getSerial_number());
+                        game_turn.player1.getSelectedCardsArrayList().remove(card_image.getSerial_number());
                     }
                 }
             });
@@ -175,9 +177,22 @@ public class GamingInterfaceActivity extends AppCompatActivity {
         return (int) (Dp * density);
     }
 
+    //点击出牌按钮
     public void click_play_cards(View view) {
-        CardGroup cardGroup=new CardGroup(game_turn.player1.getSelected_Cards());
+        CardGroup cardGroup=new CardGroup(game_turn.player1.getSelectedCardsArrayList());
+        boolean result=CDDGameRule.judge(cardGroup,new CardGroup(game_turn.getLastPlayerCardsArrayList()));
+        //所选的牌不符合规则，重新选择
+        if(result==false)
+        {
+            Toast.makeText(this, "所选牌不符合规则", Toast.LENGTH_LONG).show();
+        }
+        //所选的牌符合规则，出牌权跳到下一玩家
+        //①更新GameTurn中的LastPlayerCards数组
+        //②将玩家所出的牌移除出player的selected_Cards数组
+        //③制作玩家牌打出的安卓界面动画效果
+        else
+        {
 
-
+        }
     }
 }
