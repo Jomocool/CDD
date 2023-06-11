@@ -19,6 +19,9 @@ public class GameTurn {
     public RobotPlayer player3=new RobotPlayer("人机3");
     public RobotPlayer player4=new RobotPlayer("人机4");
 
+    //记录上一位玩家的牌
+    ArrayList<Integer> LastPlayerCard=new ArrayList<>();
+
     CardGroup currentGroup;
 
     //构造函数，初始时为每位玩家发牌,并正常排序玩家的牌

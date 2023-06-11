@@ -13,6 +13,10 @@ import com.example.cdd.Game.System.GameTurn;
 import com.example.cdd.R;
 
 public class GamingInterfaceActivity extends AppCompatActivity {
+    //游戏系统
+    private GameTurn game_turn=new GameTurn();
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gaming_interface);
@@ -78,21 +82,22 @@ public class GamingInterfaceActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v)
                 {
-                    //没选中
+                    //取消选中
                     if(!card_image.get_isSelected())
                     {
                         card_image.select();
                         card_image.offsetTopAndBottom(-20);
+                        game_turn.player1.getSelected_Cards().remove(card_image.getSerial_number());
                     }
                     //选中
                     else
                     {
                         card_image.cancel_select();
                         card_image.offsetTopAndBottom(20);
+                        game_turn.player1.getSelected_Cards().add(card_image.getSerial_number());
                     }
                 }
             });
-
         }
     }
 
@@ -169,6 +174,7 @@ public class GamingInterfaceActivity extends AppCompatActivity {
         return (int) (Dp * density);
     }
 
-    //游戏系统
-    private GameTurn game_turn=new GameTurn();
+    public void click_play_cards(View view) {
+
+    }
 }

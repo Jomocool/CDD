@@ -80,7 +80,8 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
             android:backgroundTint="@color/orange"
-            android:text="出牌" />
+            android:text="出牌"
+            android:onClick="click_play_cards"/>
 
         <Button
             android:id="@+id/passButton"
