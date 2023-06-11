@@ -187,11 +187,31 @@ public class GamingInterfaceActivity extends AppCompatActivity {
             Toast.makeText(this, "所选牌不符合规则", Toast.LENGTH_LONG).show();
         }
         //所选的牌符合规则，出牌权跳到下一玩家
-        //①更新GameTurn中的LastPlayerCards数组
-        //②将玩家所出的牌移除出player的selected_Cards数组
-        //③制作玩家牌打出的安卓界面动画效果
         else
         {
+            //①清空数组并将玩家的出牌赋值给LastPlayerCardsArrayList
+            game_turn.getLastPlayerCardsArrayList().clear();
+            game_turn.getLastPlayerCardsArrayList().addAll(game_turn.player1.getSelectedCardsArrayList());
+
+            //②将玩家所出的牌移除出serial_number数组
+            for(int i=0;i<game_turn.player1.getSelectedCardsArrayList().size();i++)
+            {
+                game_turn.player1.getArrayList().remove(game_turn.player1.getSelectedCardsArrayList().get(i));
+            }
+            //清空玩家的selected_Cards数组
+            game_turn.player1.getSelectedCardsArrayList().clear();
+
+//            //③制作玩家牌打出的安卓界面动画效果
+//            LinearLayout linearLayout=findViewById(R.id.playerCardsContainer);
+//            for(int i=0;i<linearLayout.getChildCount();i++)
+//            {
+//                //选中的牌，移除出LinearLayout
+//                if(linearLayout.getChildAt(i).isSelected())
+//                {
+//                    linearLayout.removeView(linearLayout.getChildAt(i));
+//                }
+//                //显示到屏幕的中央
+//            }
 
         }
     }
