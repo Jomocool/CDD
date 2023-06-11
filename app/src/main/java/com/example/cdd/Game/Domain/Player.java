@@ -6,11 +6,6 @@ import java.util.Collections;
 //玩家类，代表玩家，每个玩家有13张牌
 public class Player
 {
-    public Player(String Name)
-    {
-        name=Name;
-    }
-
     //玩家姓名
     String name=new String();
 
@@ -22,6 +17,13 @@ public class Player
 
     //选择操作 0:pass 1:出牌
     int operator;
+
+    public Player(String Name)
+    {
+        name=Name;
+    }
+
+    public Player(){}
 
     //正常排序
     public void normal_sort()
@@ -70,6 +72,13 @@ public class Player
             System.out.print(str+" ");
         }
         System.out.println();
+    }
+
+    //删除打出去的牌
+    public void delete_SelectedCards(){
+        for(int i=0;i<selected_Cards.size();i++){
+            cards_list.remove(selected_Cards.get(i));
+        }
     }
 
     String getName()

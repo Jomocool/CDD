@@ -4,6 +4,7 @@ import com.example.cdd.Game.Domain.CardGroup;
 import com.example.cdd.Game.Domain.Cards;
 import com.example.cdd.Game.Domain.Player;
 import com.example.cdd.Game.Domain.PokerType;
+import com.example.cdd.Game.Domain.RobotPlayer;
 import com.example.cdd.Game.Rule.GameRule;
 
 import java.util.ArrayList;
@@ -14,9 +15,11 @@ public class GameTurn {
 
     //四位玩家
     public Player player1=new Player("玩家1");
-    public Player player2=new Player("玩家2");
-    public Player player3=new Player("玩家3");
-    public Player player4=new Player("玩家4");
+    public RobotPlayer player2=new RobotPlayer("人机2");
+    public RobotPlayer player3=new RobotPlayer("人机3");
+    public RobotPlayer player4=new RobotPlayer("人机4");
+
+    CardGroup currentGroup;
 
     //构造函数，初始时为每位玩家发牌,并正常排序玩家的牌
     public GameTurn()
