@@ -38,7 +38,8 @@
         <!--游戏主界面的Activity-->
         <activity
             android:name=".Game.UI.GamingInterfaceActivity"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            android:exported="true">
         </activity>
 
     </application>
