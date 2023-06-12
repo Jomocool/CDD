@@ -13,7 +13,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:gravity="bottom"
-
+        android:animateLayoutChanges="true"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,14 +28,12 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:gravity="top"
-
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
     </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/player2CardsContainer"
@@ -59,18 +57,31 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.498">
-
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/JustPlayCardsContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="110dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:animateLayoutChanges="true"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/player4CardsContainer"></LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="8dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/playerCardsContainer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
@@ -80,8 +91,8 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
             android:backgroundTint="@color/orange"
-            android:text="出牌"
-            android:onClick="click_play_cards"/>
+            android:onClick="click_play_cards"
+            android:text="出牌" />
 
         <Button
             android:id="@+id/passButton"

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/victory" />
+
+    <Button
+        android:id="@+id/button_defeat_continue"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="135dp"
+        android:layout_marginBottom="75dp"
+        android:backgroundTint="@color/orange"
+        android:onClick="click_login"
+        android:text="继续游戏"
+        android:textSize="30sp"/>
+
+    <Button
+        android:id="@+id/button_defeat_exit"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="135dp"
+        android:layout_marginBottom="25dp"
+        android:backgroundTint="@color/orange"
+        android:onClick="click_login"
+        android:text="继续游戏"
+        android:textSize="30sp" />
+
+</LinearLayout>
+
+

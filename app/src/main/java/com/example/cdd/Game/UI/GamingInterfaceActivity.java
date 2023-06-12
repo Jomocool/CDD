@@ -10,14 +10,20 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cdd.Game.Domain.CardGroup;
+import com.example.cdd.Game.Domain.Cards;
 import com.example.cdd.Game.Domain.Player;
 import com.example.cdd.Game.Rule.CDDGameRule;
 import com.example.cdd.Game.System.GameTurn;
 import com.example.cdd.R;
 
+import java.util.ArrayList;
+
 public class GamingInterfaceActivity extends AppCompatActivity {
     //游戏系统
     private GameTurn game_turn=new GameTurn();
+
+    //记录出的牌
+    private ArrayList<CardImage> selectedCardImage = new ArrayList<>();
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +83,8 @@ public class GamingInterfaceActivity extends AppCompatActivity {
             String image_name="card"+player.getArrayList().get(i);
             int resourceId =getResources().getIdentifier(image_name,"mipmap",getPackageName());
             card_image.setImageResource(resourceId);
+
+            //加入水平布局中
             addToHorizontalLinearLayout(card_image,layout);
 
             //设置牌的点击动作
@@ -90,6 +98,7 @@ public class GamingInterfaceActivity extends AppCompatActivity {
                     {
                         card_image.select();
                         card_image.offsetTopAndBottom(-20);
+                        selectedCardImage.add(card_image);
                         game_turn.player1.getSelectedCardsArrayList().add(card_image.getSerial_number());
                     }
                     //取消选中
@@ -97,7 +106,8 @@ public class GamingInterfaceActivity extends AppCompatActivity {
                     {
                         card_image.cancel_select();
                         card_image.offsetTopAndBottom(20);
-                        game_turn.player1.getSelectedCardsArrayList().remove(card_image.getSerial_number());
+                        selectedCardImage.add(card_image);
+                        game_turn.player1.getSelectedCardsArrayList().remove((Integer) card_image.getSerial_number());
                     }
                 }
             });
@@ -122,11 +132,13 @@ public class GamingInterfaceActivity extends AppCompatActivity {
             //添加资源图片
             int resourceId =getResources().getIdentifier("poker_back","mipmap",getPackageName());
             card_image.setImageResource(resourceId);
+
+            //加入水平布局中
             addToHorizontalLinearLayout(card_image,layout);
         }
     }
 
-    //将玩家3的牌加入布局中
+    //将玩家2的牌加入布局中
     void addPlayer2AllCards(Player player2)
     {
         LinearLayout layout=findViewById(R.id.player2CardsContainer);
@@ -182,7 +194,7 @@ public class GamingInterfaceActivity extends AppCompatActivity {
         CardGroup cardGroup=new CardGroup(game_turn.player1.getSelectedCardsArrayList());
         boolean result=CDDGameRule.judge(cardGroup,new CardGroup(game_turn.getLastPlayerCardsArrayList()));
         //所选的牌不符合规则，重新选择
-        if(result==false)
+        if(false)//result==false
         {
             Toast.makeText(this, "所选牌不符合规则", Toast.LENGTH_LONG).show();
         }
@@ -201,18 +213,23 @@ public class GamingInterfaceActivity extends AppCompatActivity {
             //清空玩家的selected_Cards数组
             game_turn.player1.getSelectedCardsArrayList().clear();
 
-//            //③制作玩家牌打出的安卓界面动画效果
-//            LinearLayout linearLayout=findViewById(R.id.playerCardsContainer);
-//            for(int i=0;i<linearLayout.getChildCount();i++)
-//            {
-//                //选中的牌，移除出LinearLayout
-//                if(linearLayout.getChildAt(i).isSelected())
-//                {
-//                    linearLayout.removeView(linearLayout.getChildAt(i));
-//                }
-//                //显示到屏幕的中央
-//            }
+            //③制作玩家牌打出的安卓界面动画效果
+            // 移除牌
+            LinearLayout linearLayout=findViewById(R.id.playerCardsContainer);
+            LinearLayout justPlayedCard=findViewById(R.id.JustPlayCardsContainer);
+            for (int i = 0; i<selectedCardImage.size();i++)
+            {
+                CardImage image = selectedCardImage.get(i);
+                CardImage new_image=new CardImage(this,image.getSerial_number(),130);
+                linearLayout.removeView(image);
+                addToHorizontalLinearLayout(new_image,justPlayedCard);
+            }
+            selectedCardImage.clear();
 
+            //设置第一张牌不偏移
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMarginStart(0);
+            linearLayout.getChildAt(0).setLayoutParams(lp);
         }
     }
 }
