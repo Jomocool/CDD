@@ -21,6 +21,8 @@ import java.util.ArrayList;
 public class GamingInterfaceActivity extends AppCompatActivity {
     //游戏系统
     private GameTurn game_turn=new GameTurn();
+
+    //记录出的牌
     private ArrayList<CardImage> selectedCardImage = new ArrayList<>();
 
 
@@ -81,6 +83,8 @@ public class GamingInterfaceActivity extends AppCompatActivity {
             String image_name="card"+player.getArrayList().get(i);
             int resourceId =getResources().getIdentifier(image_name,"mipmap",getPackageName());
             card_image.setImageResource(resourceId);
+
+            //加入水平布局中
             addToHorizontalLinearLayout(card_image,layout);
 
             //设置牌的点击动作
@@ -128,6 +132,8 @@ public class GamingInterfaceActivity extends AppCompatActivity {
             //添加资源图片
             int resourceId =getResources().getIdentifier("poker_back","mipmap",getPackageName());
             card_image.setImageResource(resourceId);
+
+            //加入水平布局中
             addToHorizontalLinearLayout(card_image,layout);
         }
     }
@@ -208,13 +214,15 @@ public class GamingInterfaceActivity extends AppCompatActivity {
             game_turn.player1.getSelectedCardsArrayList().clear();
 
             //③制作玩家牌打出的安卓界面动画效果
+            // 移除牌
             LinearLayout linearLayout=findViewById(R.id.playerCardsContainer);
-            //LinearLayout justPlayCards=findViewById(R.id.JustPlayCardsContainer);
+            LinearLayout justPlayedCard=findViewById(R.id.JustPlayCardsContainer);
             for (int i = 0; i<selectedCardImage.size();i++)
             {
                 CardImage image = selectedCardImage.get(i);
-                //addToHorizontalLinearLayout(image,justPlayCards);//显示到屏幕的中央
-                linearLayout.removeView(image);//移除牌
+                CardImage new_image=new CardImage(this,image.getSerial_number(),130);
+                linearLayout.removeView(image);
+                addToHorizontalLinearLayout(new_image,justPlayedCard);
             }
             selectedCardImage.clear();
 
