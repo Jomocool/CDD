@@ -1,5 +1,7 @@
 package com.example.cdd.Game.UI;
 
+import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +16,7 @@ import com.example.cdd.Game.Domain.Cards;
 import com.example.cdd.Game.Domain.Player;
 import com.example.cdd.Game.Rule.CDDGameRule;
 import com.example.cdd.Game.System.GameTurn;
+import com.example.cdd.GameOver.UI.Victory;
 import com.example.cdd.R;
 
 import java.util.ArrayList;
@@ -24,6 +27,8 @@ public class GamingInterfaceActivity extends AppCompatActivity {
 
     //记录出的牌
     private ArrayList<CardImage> selectedCardImage = new ArrayList<>();
+
+    private ArrayList<CardImage> justPlayedCards=new ArrayList<>();
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,35 +206,68 @@ public class GamingInterfaceActivity extends AppCompatActivity {
         //所选的牌符合规则，出牌权跳到下一玩家
         else
         {
-            //①清空数组并将玩家的出牌赋值给LastPlayerCardsArrayList
+            LinearLayout linearLayout=findViewById(R.id.playerCardsContainer);
+            LinearLayout justPlayedCardLayout=findViewById(R.id.JustPlayCardsContainer);
+
+            //①先清空中间显示的牌
+            for(int i=0;i<justPlayedCards.size();i++)
+            {
+                CardImage image=justPlayedCards.get(i);
+                justPlayedCardLayout.removeView(image);
+            }
+            justPlayedCards.clear();
+
+            //②清空数组并将玩家的出牌赋值给LastPlayerCardsArrayList
             game_turn.getLastPlayerCardsArrayList().clear();
             game_turn.getLastPlayerCardsArrayList().addAll(game_turn.player1.getSelectedCardsArrayList());
 
-            //②将玩家所出的牌移除出serial_number数组
+
+            //③将玩家所出的牌移除出serial_number数组
             for(int i=0;i<game_turn.player1.getSelectedCardsArrayList().size();i++)
             {
-                game_turn.player1.getArrayList().remove(game_turn.player1.getSelectedCardsArrayList().get(i));
+                Integer integer=game_turn.player1.getSelectedCardsArrayList().get(i);
+                game_turn.player1.getArrayList().remove(integer);
             }
+
+            //当玩家的牌数量等于0时，游戏结束
+            if(game_turn.player1.getArrayList().size()==0)
+            {
+                startActivity(new Intent(this,Victory.class));
+                return;
+            }
+
             //清空玩家的selected_Cards数组
             game_turn.player1.getSelectedCardsArrayList().clear();
 
-            //③制作玩家牌打出的安卓界面动画效果
+
+            //④制作玩家牌打出的安卓界面动画效果
             // 移除牌
-            LinearLayout linearLayout=findViewById(R.id.playerCardsContainer);
-            LinearLayout justPlayedCard=findViewById(R.id.JustPlayCardsContainer);
             for (int i = 0; i<selectedCardImage.size();i++)
             {
                 CardImage image = selectedCardImage.get(i);
                 CardImage new_image=new CardImage(this,image.getSerial_number(),130);
+                //从玩家牌池中移除牌
                 linearLayout.removeView(image);
-                addToHorizontalLinearLayout(new_image,justPlayedCard);
+                //添加进入中间牌池显示
+                justPlayedCards.add(new_image);
+                addToHorizontalLinearLayout(new_image,justPlayedCardLayout);
             }
-            selectedCardImage.clear();
+            if(linearLayout.getChildCount()!=0)
+            {
+                //设置第一张牌不偏移
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp.setMarginStart(0);
+                linearLayout.getChildAt(0).setLayoutParams(lp);
+            }
+            if(justPlayedCardLayout.getChildCount()!=0)
+            {
+                //设置第一张牌不偏移
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp.setMarginStart(0);
+                justPlayedCardLayout.getChildAt(0).setLayoutParams(lp);
+            }
 
-            //设置第一张牌不偏移
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-            lp.setMarginStart(0);
-            linearLayout.getChildAt(0).setLayoutParams(lp);
+            selectedCardImage.clear();
         }
     }
 }
