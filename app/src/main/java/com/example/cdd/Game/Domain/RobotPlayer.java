@@ -385,27 +385,27 @@ public class RobotPlayer extends Player{
     }
 
     public ArrayList<Integer> maxPlayer(){
-        ArrayList<Integer> containDiamond3=new ArrayList<>();
+        ArrayList<Integer> maxNumCards=new ArrayList<>();
         ArrayList<Integer>defaultArr=new ArrayList<>();
         defaultArr.add(0);
 
-        containDiamond3=findMinC11111(defaultArr);
-        if(containDiamond3.size()>0)return containDiamond3;
-        containDiamond3=findMinCFive(defaultArr);
-        if(containDiamond3.size()>0)return containDiamond3;
-        containDiamond3=findMinC32(defaultArr);
-        if(containDiamond3.size()>0)return containDiamond3;
-        containDiamond3=findMinC41(defaultArr);
-        if(containDiamond3.size()>0)return containDiamond3;
-        containDiamond3=findC11111Five(defaultArr);
-        if(containDiamond3.size()>0)return containDiamond3;
-        containDiamond3=findMinC3(defaultArr);
-        if(containDiamond3.size()>0)return containDiamond3;
-        containDiamond3=findMinC2(defaultArr);
-        if(containDiamond3.size()>0)return containDiamond3;
-        containDiamond3=findMinC1(defaultArr);
-        if(containDiamond3.size()>0)return containDiamond3;
+        maxNumCards=findMinC11111(defaultArr);
+        if(maxNumCards.size()>0)return maxNumCards;
+        maxNumCards=findMinCFive(defaultArr);
+        if(maxNumCards.size()>0)return maxNumCards;
+        maxNumCards=findMinC32(defaultArr);
+        if(maxNumCards.size()>0)return maxNumCards;
+        maxNumCards=findMinC41(defaultArr);
+        if(maxNumCards.size()>0)return maxNumCards;
+        maxNumCards=findC11111Five(defaultArr);
+        if(maxNumCards.size()>0)return maxNumCards;
+        maxNumCards=findMinC3(defaultArr);
+        if(maxNumCards.size()>0)return maxNumCards;
+        maxNumCards=findMinC2(defaultArr);
+        if(maxNumCards.size()>0)return maxNumCards;
+        maxNumCards=findMinC1(defaultArr);
+        if(maxNumCards.size()>0)return maxNumCards;
 
-        return containDiamond3;
+        return maxNumCards;
     }
 }
