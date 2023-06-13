@@ -15,12 +15,18 @@ public class CardGroup {
     //默认构造函数
     public CardGroup(){
         cards=new ArrayList<Integer>();
-        type=PokerType.cError;
+        type=PokerType.cDefault;
         maxCard=0;
     }
 
     //构造函数，传入选中的牌，并判断牌型
     public CardGroup(ArrayList<Integer> selectedCards) {
+        if(selectedCards.get(0)==0){
+            cards=selectedCards;
+            type=PokerType.cDefault;
+            maxCard=0;
+        }
+
         cards = selectedCards;
         //排序牌组，方便比大小
         Collections.sort(cards, new Comparator<Integer>() {
