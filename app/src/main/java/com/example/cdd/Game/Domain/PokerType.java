@@ -1,6 +1,7 @@
 package com.example.cdd.Game.Domain;
 
 public enum PokerType {
+    cDefault,
     //单张：任何一张单牌
     c1,
     //一对：二张牌点相同的牌

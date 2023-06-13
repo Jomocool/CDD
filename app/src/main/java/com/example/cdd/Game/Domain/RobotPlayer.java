@@ -358,4 +358,29 @@ public class RobotPlayer extends Player{
 
         return isSamePattern;
     }
+
+    public ArrayList<Integer> firstPlay(){
+        ArrayList<Integer> containDiamond3=new ArrayList<>();
+        ArrayList<Integer>defaultArr=new ArrayList<>();
+        defaultArr.add(0);
+
+        containDiamond3=findMinC11111(defaultArr);
+        if(containDiamond3.size()>0&&containDiamond3.contains(1))return containDiamond3;
+        containDiamond3=findMinCFive(defaultArr);
+        if(containDiamond3.size()>0&&containDiamond3.contains(1))return containDiamond3;
+        containDiamond3=findMinC32(defaultArr);
+        if(containDiamond3.size()>0&&containDiamond3.contains(1))return containDiamond3;
+        containDiamond3=findMinC41(defaultArr);
+        if(containDiamond3.size()>0&&containDiamond3.contains(1))return containDiamond3;
+        containDiamond3=findC11111Five(defaultArr);
+        if(containDiamond3.size()>0&&containDiamond3.contains(1))return containDiamond3;
+        containDiamond3=findMinC3(defaultArr);
+        if(containDiamond3.size()>0&&containDiamond3.contains(1))return containDiamond3;
+        containDiamond3=findMinC2(defaultArr);
+        if(containDiamond3.size()>0&&containDiamond3.contains(1))return containDiamond3;
+        containDiamond3=findMinC1(defaultArr);
+        if(containDiamond3.size()>0&&containDiamond3.contains(1))return containDiamond3;
+
+        return containDiamond3;
+    }
 }
