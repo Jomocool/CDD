@@ -21,10 +21,11 @@ public class CardGroup {
 
     //构造函数，传入选中的牌，并判断牌型
     public CardGroup(ArrayList<Integer> selectedCards) {
-        if(selectedCards.get(0)==0){
+        if(selectedCards.size()>0&&selectedCards.get(0)==0){
             cards=selectedCards;
             type=PokerType.cDefault;
             maxCard=0;
+            return;
         }
 
         cards = selectedCards;

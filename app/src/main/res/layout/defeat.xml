@@ -10,7 +10,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:scaleType="centerCrop"
-        android:src="@mipmap/victory" />
+        android:src="@mipmap/defeat" />
 
     <Button
         android:id="@+id/button_defeat_continue"
@@ -21,7 +21,7 @@
         android:layout_marginStart="135dp"
         android:layout_marginBottom="75dp"
         android:backgroundTint="@color/orange"
-        android:onClick="click_login"
+        android:onClick="click_defeat_continue"
         android:text="继续游戏"
         android:textSize="30sp"/>
 
@@ -34,7 +34,7 @@
         android:layout_marginStart="135dp"
         android:layout_marginBottom="25dp"
         android:backgroundTint="@color/orange"
-        android:onClick="click_login"
+        android:onClick="click_defeat_exit"
         android:text="继续游戏"
         android:textSize="30sp" />
 

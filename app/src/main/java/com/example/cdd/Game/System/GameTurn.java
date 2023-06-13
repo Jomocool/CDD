@@ -1,6 +1,7 @@
 package com.example.cdd.Game.System;
 
 import android.media.MediaParser;
+import android.util.Log;
 
 import com.example.cdd.Game.Domain.CardGroup;
 import com.example.cdd.Game.Domain.Cards;
@@ -8,23 +9,27 @@ import com.example.cdd.Game.Domain.Player;
 import com.example.cdd.Game.Domain.PokerType;
 import com.example.cdd.Game.Domain.RobotPlayer;
 import com.example.cdd.Game.Rule.GameRule;
+import com.example.cdd.Game.UI.GamingInterfaceActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 //游戏的主要运行过程
 public class GameTurn {
+    //activity
+    private GamingInterfaceActivity activity;
+
+    //出牌的次数
+    private int play_cards_count=0;
+
+    //是否游戏结束
+    private boolean is_GameOver=false;
 
     //四位玩家
     public Player player1=new Player("玩家1");
     public RobotPlayer player2=new RobotPlayer("人机2");
     public RobotPlayer player3=new RobotPlayer("人机3");
     public RobotPlayer player4=new RobotPlayer("人机4");
-
-    //记录三个电脑玩家即将出的牌，调用Robot的playCards函数即可自动给出牌
-    private ArrayList<Integer> robot2PlanToPlayCards=new ArrayList<>();
-    private ArrayList<Integer> robot3PlanToPlayCards=new ArrayList<>();
-    private ArrayList<Integer> robot4PlanToPlayCards=new ArrayList<>();
 
     //player1得分
     int score1;
@@ -38,6 +43,12 @@ public class GameTurn {
     //player4得分
     int score4;
 
+    //设置游戏结束
+    public void setGameOver()
+    {
+        is_GameOver=true;
+    }
+
     //记录上一位玩家的牌
     ArrayList<Integer> LastPlayerCards=new ArrayList<>();
 
@@ -48,8 +59,10 @@ public class GameTurn {
     }
 
     //构造函数，初始时为每位玩家发牌,并正常排序玩家的牌
-    public GameTurn()
+    public GameTurn(GamingInterfaceActivity Activity)
     {
+        activity=Activity;
+
         score1=0;
         score2=0;
         score3=0;
@@ -95,47 +108,69 @@ public class GameTurn {
     //牌局进行中
     public void PlayingGame()
     {
-        int play_cards_count=0;
-        while(player1.getArrayList().size()==0||player2.getArrayList().size()==0||player3.getArrayList().size()==0||player4.getArrayList().size()==0)
+        Log.e("inf",""+player1.getTurn());
+        Log.e("inf",""+player2.getTurn());
+        Log.e("inf",""+player3.getTurn());
+        Log.e("inf",""+player4.getTurn());
+
+
+        if(is_GameOver==true)
         {
-            //人类玩家
-            if((player1.getTurn()%4)==play_cards_count)
-            {
-                //界面中的点击事件实现了出牌功能
-
-            }
-
-            //人机2
-            if((player2.getTurn()%4)==play_cards_count)
-            {
-               player2.setSelectedCardsArrayList(player2.getCards(LastPlayerCards));
-
-            }
-
-            //人机3
-            if((player3.getTurn()%4)==play_cards_count)
-            {
-                player3.setSelectedCardsArrayList(player3.getCards(LastPlayerCards));
-
-            }
-
-            //人机4
-            if((player4.getTurn()%4)==play_cards_count)
-            {
-                player4.setSelectedCardsArrayList(player4.getCards(LastPlayerCards));
-
-            }
-
-            //清除这一步中电脑玩家出的牌
-            player2.getSelectedCardsArrayList().clear();
-            player3.getSelectedCardsArrayList().clear();
-            player4.getSelectedCardsArrayList().clear();
-
-            //出牌次数加一，便于下次判断轮到谁出牌
-            play_cards_count+=1;
+            return;
         }
-    }
 
+        //人类玩家
+        if((play_cards_count%4)==player1.getTurn())
+        {
+            //界面中的点击事件实现了出牌功能
+
+        }
+
+        //人机2
+        if((play_cards_count%4)==player2.getTurn())
+        {
+            //根据人机算法自动获取要出的牌
+            if(play_cards_count==0)
+                player2.setSelectedCardsArrayList(player2.firstPlay());
+            else
+                player2.setSelectedCardsArrayList(player2.getCards(LastPlayerCards));
+            //出牌动画
+            activity.player2_plays_cards();
+            //清空人机要出的牌
+            player2.getSelectedCardsArrayList().clear();
+        }
+
+        //人机3
+        if((play_cards_count%4)==player3.getTurn())
+        {
+            //根据人机算法自动获取要出的牌
+            if(play_cards_count==0)
+                player3.setSelectedCardsArrayList(player3.firstPlay());
+            else
+                player3.setSelectedCardsArrayList(player3.getCards(LastPlayerCards));
+            //出牌动画
+            activity.player4_plays_cards();
+            //清空人机要出的牌
+            player3.getSelectedCardsArrayList().clear();
+        }
+
+        //人机4
+        if((play_cards_count%4)==player4.getTurn())
+        {
+            //根据人机算法自动获取要出的牌
+            if(play_cards_count==0)
+                player4.setSelectedCardsArrayList(player4.firstPlay());
+            else
+                player4.setSelectedCardsArrayList(player4.getCards(LastPlayerCards));
+            //出牌动画
+            activity.player4_plays_cards();
+            //清空人机要出的牌
+            player4.getSelectedCardsArrayList().clear();
+        }
+
+        //出牌次数加一，便于下次判断轮到谁出牌
+        play_cards_count+=1;
+    }
 
     //洗牌
     void shuffle_cards()
