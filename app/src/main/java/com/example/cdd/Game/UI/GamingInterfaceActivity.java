@@ -42,6 +42,9 @@ public class GamingInterfaceActivity extends AppCompatActivity {
         addPlayer4AllCards(game_turn.player4);
         addPlayer2AllCards(game_turn.player2);
         addPlayer3AllCards(game_turn.player3);
+
+        //游戏中
+        //game_turn.PlayingGame();
     }
 
     //将一张牌水平地添加到线性布局中
@@ -219,7 +222,7 @@ public class GamingInterfaceActivity extends AppCompatActivity {
         boolean result=CDDGameRule.judge(cardGroup,new CardGroup(game_turn.getLastPlayerCardsArrayList()));
 
         //所选的牌不符合规则，重新选择
-        if(result==false)//result==false
+        if(result==false)//
         {
             game_turn.player1.getSelectedCardsArrayList().clear();
             Toast.makeText(this, "所选牌不符合规则", Toast.LENGTH_LONG).show();
@@ -291,11 +294,21 @@ public class GamingInterfaceActivity extends AppCompatActivity {
     public void player2_plays_cards()
     {
         ArrayList<Integer> list=game_turn.player2.getSelectedCardsArrayList();
+
+        //测试用 最终要删掉
+        /*ArrayList<Integer> list=new ArrayList<>();
+        for(int i=0;i<5;i++)
+        {
+            list.add(game_turn.player2.getArrayList().get(i));
+        }*/
+
+
         LinearLayout player2_cards_layout=findViewById(R.id.player2CardsContainer);
         LinearLayout just_played_cards_layout=findViewById(R.id.JustPlayCardsContainer);
 
         if(list.size()==0)//该玩家选择过
         {
+            //在玩家处显示过的图标，并在下次删除
 
         }
         else
@@ -337,7 +350,7 @@ public class GamingInterfaceActivity extends AppCompatActivity {
 
                 //添加到中间牌池
                 CardImage new_card_image=new CardImage(this,list.get(i),130);
-                just_played_cards_layout.addView(new_card_image);
+                addToHorizontalLinearLayout(new_card_image,just_played_cards_layout);
             }
             //设置电脑玩家的第一张牌不偏移
             if(player2_cards_layout.getChildCount()!=0)

@@ -93,7 +93,7 @@ public class GameTurn {
     }
 
     //牌局进行中
-    void PlayingGame()
+    public void PlayingGame()
     {
         int play_cards_count=0;
         while(player1.getArrayList().size()==0||player2.getArrayList().size()==0||player3.getArrayList().size()==0||player4.getArrayList().size()==0)
@@ -108,28 +108,28 @@ public class GameTurn {
             //人机2
             if((player2.getTurn()%4)==play_cards_count)
             {
-                robot2PlanToPlayCards=player2.getCards(LastPlayerCards);
+               player2.setSelectedCardsArrayList(player2.getCards(LastPlayerCards));
 
             }
 
             //人机3
             if((player3.getTurn()%4)==play_cards_count)
             {
-                robot3PlanToPlayCards=player2.getCards(LastPlayerCards);
+                player3.setSelectedCardsArrayList(player3.getCards(LastPlayerCards));
 
             }
 
             //人机4
             if((player4.getTurn()%4)==play_cards_count)
             {
-                robot4PlanToPlayCards=player2.getCards(LastPlayerCards);
+                player4.setSelectedCardsArrayList(player4.getCards(LastPlayerCards));
 
             }
 
-            //清楚这一步中电脑玩家出的牌
-            robot2PlanToPlayCards.clear();
-            robot3PlanToPlayCards.clear();
-            robot4PlanToPlayCards.clear();
+            //清除这一步中电脑玩家出的牌
+            player2.getSelectedCardsArrayList().clear();
+            player3.getSelectedCardsArrayList().clear();
+            player4.getSelectedCardsArrayList().clear();
 
             //出牌次数加一，便于下次判断轮到谁出牌
             play_cards_count+=1;

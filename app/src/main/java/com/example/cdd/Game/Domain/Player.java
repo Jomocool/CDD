@@ -15,7 +15,7 @@ public class Player
     //存放玩家的13张牌序号，可通过Card的serial_number_TO_card找到对应的牌号和花色
     ArrayList<Integer> cards_list=new ArrayList<>();
 
-    //选中的牌
+    //选中的牌,即将要出的牌，每次用完要清空
     ArrayList<Integer>selectedCards=new ArrayList<>();
 
     //选择操作 0:pass 1:出牌
@@ -129,5 +129,14 @@ public class Player
 
     public ArrayList<Integer> getSelectedCardsArrayList() {
         return selectedCards;
+    }
+
+    public void setSelectedCardsArrayList(ArrayList<Integer> list)
+    {
+        selectedCards.clear();
+        for(int i=0;i<list.size();i++)
+        {
+            selectedCards.add(list.get(i));
+        }
     }
 }
