@@ -9,6 +9,9 @@ public class Player
     //玩家姓名
     String name=new String();
 
+    //玩家的出排顺序
+    int turn;
+
     //存放玩家的13张牌序号，可通过Card的serial_number_TO_card找到对应的牌号和花色
     ArrayList<Integer> cards_list=new ArrayList<>();
 
@@ -17,6 +20,16 @@ public class Player
 
     //选择操作 0:pass 1:出牌
     int operator;
+
+    public void setTurn(int TURN)
+    {
+        turn=TURN;
+    }
+
+    public int getTurn()
+    {
+        return turn;
+    }
 
     public Player(String Name)
     {

@@ -16,19 +16,22 @@ import com.example.cdd.Game.Domain.Cards;
 import com.example.cdd.Game.Domain.Player;
 import com.example.cdd.Game.Rule.CDDGameRule;
 import com.example.cdd.Game.System.GameTurn;
+import com.example.cdd.GameOver.UI.Defeat;
 import com.example.cdd.GameOver.UI.Victory;
 import com.example.cdd.R;
 
+import java.sql.Array;
 import java.util.ArrayList;
 
 public class GamingInterfaceActivity extends AppCompatActivity {
     //游戏系统
     private GameTurn game_turn=new GameTurn();
 
-    //记录出的牌
+    //记录要出的牌
     private ArrayList<CardImage> selectedCardImage = new ArrayList<>();
 
-    private ArrayList<CardImage> justPlayedCards=new ArrayList<>();
+    //记录刚刚其他玩家出的牌
+    private ArrayList<CardImage> justPlayedCardsImage=new ArrayList<>();
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +107,8 @@ public class GamingInterfaceActivity extends AppCompatActivity {
                         card_image.select();
                         card_image.offsetTopAndBottom(-20);
                         selectedCardImage.add(card_image);
-                        game_turn.player1.getSelectedCardsArrayList().add(card_image.getSerial_number());
+                        //已实现在出牌按钮点击时加入到player的SelectedCardsArrayList，这里不用加入，每次出牌时加入更方便
+                        //game_turn.player1.getSelectedCardsArrayList().add(card_image.getSerial_number());
                     }
                     //取消选中
                     else
@@ -112,7 +116,8 @@ public class GamingInterfaceActivity extends AppCompatActivity {
                         card_image.cancel_select();
                         card_image.offsetTopAndBottom(20);
                         selectedCardImage.add(card_image);
-                        game_turn.player1.getSelectedCardsArrayList().remove((Integer) card_image.getSerial_number());
+                        //已实现在出牌按钮点击时加入到player的SelectedCardsArrayList，这里不用加入，每次出牌时加入更方便
+                        //game_turn.player1.getSelectedCardsArrayList().remove((Integer) card_image.getSerial_number());
                     }
                 }
             });
@@ -194,33 +199,45 @@ public class GamingInterfaceActivity extends AppCompatActivity {
         return (int) (Dp * density);
     }
 
-    //点击出牌按钮
+    //点击出牌按钮(人类玩家打牌)
     public void click_play_cards(View view) {
+        //布局文件
+        LinearLayout linearLayout=findViewById(R.id.playerCardsContainer);
+        LinearLayout justPlayedCardLayout=findViewById(R.id.JustPlayCardsContainer);
+
+        //点击出牌，会将点击的牌加入到player1的selectedCardsArrayList数组中
+        for(int i=0;i<linearLayout.getChildCount();i++)
+        {
+            CardImage image=(CardImage)linearLayout.getChildAt(i);
+            if(image.get_isSelected()==true)
+            {
+                game_turn.player1.getSelectedCardsArrayList().add((Integer) image.getSerial_number());
+            }
+        }
+
         CardGroup cardGroup=new CardGroup(game_turn.player1.getSelectedCardsArrayList());
         boolean result=CDDGameRule.judge(cardGroup,new CardGroup(game_turn.getLastPlayerCardsArrayList()));
+
         //所选的牌不符合规则，重新选择
-        if(false)//result==false
+        if(result==false)//result==false
         {
+            game_turn.player1.getSelectedCardsArrayList().clear();
             Toast.makeText(this, "所选牌不符合规则", Toast.LENGTH_LONG).show();
         }
         //所选的牌符合规则，出牌权跳到下一玩家
         else
         {
-            LinearLayout linearLayout=findViewById(R.id.playerCardsContainer);
-            LinearLayout justPlayedCardLayout=findViewById(R.id.JustPlayCardsContainer);
-
             //①先清空中间显示的牌
-            for(int i=0;i<justPlayedCards.size();i++)
+            for(int i=0;i<justPlayedCardsImage.size();i++)
             {
-                CardImage image=justPlayedCards.get(i);
+                CardImage image=justPlayedCardsImage.get(i);
                 justPlayedCardLayout.removeView(image);
             }
-            justPlayedCards.clear();
+            justPlayedCardsImage.clear();
 
-            //②清空数组并将玩家的出牌赋值给LastPlayerCardsArrayList
+            //②清空原先的上一玩家出牌数组并将该玩家的出牌赋值给LastPlayerCardsArrayList
             game_turn.getLastPlayerCardsArrayList().clear();
             game_turn.getLastPlayerCardsArrayList().addAll(game_turn.player1.getSelectedCardsArrayList());
-
 
             //③将玩家所出的牌移除出serial_number数组
             for(int i=0;i<game_turn.player1.getSelectedCardsArrayList().size();i++)
@@ -228,7 +245,6 @@ public class GamingInterfaceActivity extends AppCompatActivity {
                 Integer integer=game_turn.player1.getSelectedCardsArrayList().get(i);
                 game_turn.player1.getArrayList().remove(integer);
             }
-
             //当玩家的牌数量等于0时，游戏结束
             if(game_turn.player1.getArrayList().size()==0)
             {
@@ -239,7 +255,6 @@ public class GamingInterfaceActivity extends AppCompatActivity {
             //清空玩家的selected_Cards数组
             game_turn.player1.getSelectedCardsArrayList().clear();
 
-
             //④制作玩家牌打出的安卓界面动画效果
             // 移除牌
             for (int i = 0; i<selectedCardImage.size();i++)
@@ -249,25 +264,95 @@ public class GamingInterfaceActivity extends AppCompatActivity {
                 //从玩家牌池中移除牌
                 linearLayout.removeView(image);
                 //添加进入中间牌池显示
-                justPlayedCards.add(new_image);
+                justPlayedCardsImage.add(new_image);
                 addToHorizontalLinearLayout(new_image,justPlayedCardLayout);
             }
+            //设置玩家的第一张牌不偏移
             if(linearLayout.getChildCount()!=0)
             {
-                //设置第一张牌不偏移
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
                 lp.setMarginStart(0);
                 linearLayout.getChildAt(0).setLayoutParams(lp);
             }
+            //设置中间牌池第一张牌不偏移
             if(justPlayedCardLayout.getChildCount()!=0)
             {
-                //设置第一张牌不偏移
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
                 lp.setMarginStart(0);
                 justPlayedCardLayout.getChildAt(0).setLayoutParams(lp);
             }
 
             selectedCardImage.clear();
+        }
+    }
+
+    //机器人2号打牌
+    //机器人将牌这一轮要出的牌传给它的selectedCardsArrayList中
+    public void player2_plays_cards()
+    {
+        ArrayList<Integer> list=game_turn.player2.getSelectedCardsArrayList();
+        LinearLayout player2_cards_layout=findViewById(R.id.player2CardsContainer);
+        LinearLayout just_played_cards_layout=findViewById(R.id.JustPlayCardsContainer);
+
+        if(list.size()==0)//该玩家选择过
+        {
+
+        }
+        else
+        {
+            //①先清空中间显示的牌
+            for(int i=0;i<justPlayedCardsImage.size();i++)
+            {
+                CardImage image=justPlayedCardsImage.get(i);
+                just_played_cards_layout.removeView(image);
+            }
+            justPlayedCardsImage.clear();
+
+            //②清空原先的上一玩家出牌数组并将该电脑玩家的出牌赋值给LastPlayerCardsArrayList
+            game_turn.getLastPlayerCardsArrayList().clear();
+            game_turn.getLastPlayerCardsArrayList().addAll(list);
+
+            //③将电脑玩家所出的牌移除出它的serial_number数组
+            for(int i=0;i<list.size();i++)
+            {
+                game_turn.player2.getArrayList().remove((Integer)list.get(i));
+            }
+            //当玩家的牌数量等于0时，游戏结束
+            if(game_turn.player2.getArrayList().size()==0)
+            {
+                startActivity(new Intent(this, Defeat.class));
+                return;
+            }
+
+            //清空玩家的selected_Cards数组
+            game_turn.player2.getSelectedCardsArrayList().clear();
+
+            //④制作电脑玩家牌打出的安卓界面动画效果
+            //移除牌
+            for(int i=0;i<list.size();i++)
+            {
+                //移除玩家手中特定数量的牌 移除前几张
+                CardImage cardImage=(CardImage)player2_cards_layout.getChildAt(i);
+                player2_cards_layout.removeView(cardImage);
+
+                //添加到中间牌池
+                CardImage new_card_image=new CardImage(this,list.get(i),130);
+                just_played_cards_layout.addView(new_card_image);
+            }
+            //设置电脑玩家的第一张牌不偏移
+            if(player2_cards_layout.getChildCount()!=0)
+            {
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp.setMarginStart(0);
+                player2_cards_layout.getChildAt(0).setLayoutParams(lp);
+            }
+            //设置中间牌池第一张牌不偏移
+            if(just_played_cards_layout.getChildCount()!=0)
+            {
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp.setMarginStart(0);
+                just_played_cards_layout.getChildAt(0).setLayoutParams(lp);
+            }
         }
     }
 }

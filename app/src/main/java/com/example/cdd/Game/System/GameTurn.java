@@ -21,6 +21,11 @@ public class GameTurn {
     public RobotPlayer player3=new RobotPlayer("人机3");
     public RobotPlayer player4=new RobotPlayer("人机4");
 
+    //记录三个电脑玩家即将出的牌，调用Robot的playCards函数即可自动给出牌
+    private ArrayList<Integer> robot2PlanToPlayCards=new ArrayList<>();
+    private ArrayList<Integer> robot3PlanToPlayCards=new ArrayList<>();
+    private ArrayList<Integer> robot4PlanToPlayCards=new ArrayList<>();
+
     //player1得分
     int score1;
 
@@ -42,7 +47,6 @@ public class GameTurn {
         return LastPlayerCards;
     }
 
-
     //构造函数，初始时为每位玩家发牌,并正常排序玩家的牌
     public GameTurn()
     {
@@ -56,7 +60,82 @@ public class GameTurn {
         player2.normal_sort();
         player3.normal_sort();
         player4.normal_sort();
+
+        //初始化各玩家的出牌顺序
+        if(player1.getArrayList().get(0)==1)
+        {
+            player1.setTurn(0);
+            player2.setTurn(1);
+            player4.setTurn(2);
+            player3.setTurn(3);
+        }
+        else if(player2.getArrayList().get(0)==1)
+        {
+            player2.setTurn(0);
+            player4.setTurn(1);
+            player3.setTurn(2);
+            player1.setTurn(3);
+        }
+        else if(player3.getArrayList().get(0)==1)
+        {
+            player3.setTurn(0);
+            player1.setTurn(1);
+            player2.setTurn(2);
+            player4.setTurn(3);
+        }
+        else
+        {
+            player4.setTurn(0);
+            player3.setTurn(1);
+            player1.setTurn(2);
+            player2.setTurn(3);
+        }
     }
+
+    //牌局进行中
+    void PlayingGame()
+    {
+        int play_cards_count=0;
+        while(player1.getArrayList().size()==0||player2.getArrayList().size()==0||player3.getArrayList().size()==0||player4.getArrayList().size()==0)
+        {
+            //人类玩家
+            if((player1.getTurn()%4)==play_cards_count)
+            {
+                //界面中的点击事件实现了出牌功能
+
+            }
+
+            //人机2
+            if((player2.getTurn()%4)==play_cards_count)
+            {
+                robot2PlanToPlayCards=player2.getCards(LastPlayerCards);
+
+            }
+
+            //人机3
+            if((player3.getTurn()%4)==play_cards_count)
+            {
+                robot3PlanToPlayCards=player2.getCards(LastPlayerCards);
+
+            }
+
+            //人机4
+            if((player4.getTurn()%4)==play_cards_count)
+            {
+                robot4PlanToPlayCards=player2.getCards(LastPlayerCards);
+
+            }
+
+            //清楚这一步中电脑玩家出的牌
+            robot2PlanToPlayCards.clear();
+            robot3PlanToPlayCards.clear();
+            robot4PlanToPlayCards.clear();
+
+            //出牌次数加一，便于下次判断轮到谁出牌
+            play_cards_count+=1;
+        }
+    }
+
 
     //洗牌
     void shuffle_cards()
