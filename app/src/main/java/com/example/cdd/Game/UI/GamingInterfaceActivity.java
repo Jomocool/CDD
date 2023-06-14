@@ -36,9 +36,9 @@ public class GamingInterfaceActivity extends AppCompatActivity {
         addPlayer2AllCards(game_turn.player2);
         addPlayer3AllCards(game_turn.player3);
 
-        //game_turn.PlayingGame();
+        game_turn.PlayingGame();
 
-        player2_plays_cards();
+        //player2_plays_cards();
     }
 
     //将一张牌水平地添加到线性布局中
@@ -275,11 +275,11 @@ public class GamingInterfaceActivity extends AppCompatActivity {
     //机器人将牌这一轮要出的牌传给它的selectedCardsArrayList中
     public void player2_plays_cards()
     {
-        //测试用
+        /*//测试用
         for(int i=0;i<5;i++)
         {
             game_turn.player2.getSelectedCardsArrayList().add(game_turn.player2.getArrayList().get(i));
-        }
+        }*/
 
         ArrayList<Integer> list=game_turn.player2.getSelectedCardsArrayList();
 
