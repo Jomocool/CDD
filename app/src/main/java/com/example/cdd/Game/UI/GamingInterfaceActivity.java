@@ -2,6 +2,9 @@ package com.example.cdd.Game.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,9 +23,23 @@ import com.example.cdd.R;
 
 import java.util.ArrayList;
 
-public class GamingInterfaceActivity extends AppCompatActivity {
+public class GamingInterfaceActivity extends AppCompatActivity implements MyObserver{
+
     //游戏系统
-    private GameTurn game_turn=new GameTurn(this);
+    private GameTurn game_turn=new GameTurn();
+
+    //消息传递
+    private Handler handle=new Handler(Looper.getMainLooper()) {
+        public void handleMessage(Message msg)
+        {
+            if(msg.what==0)
+            {
+
+            }
+        }
+
+    };
+
 
     //记录要出的牌
     private ArrayList<CardImage> selectedCardImage = new ArrayList<>();
@@ -36,9 +53,85 @@ public class GamingInterfaceActivity extends AppCompatActivity {
         addPlayer2AllCards(game_turn.player2);
         addPlayer3AllCards(game_turn.player3);
 
-        game_turn.PlayingGame();
+        //为被观察者(GameTurn对象)设置观察者(GamingInterfaceActivity对象）
+        game_turn.myObservable.setObserver(this);
 
-        //player2_plays_cards();
+        //game_turn.playing_game();
+    }
+
+
+    //更新界面，用于观察者接口
+    public void update()
+    {
+        if(game_turn.getIsGameOver()==true)
+        {
+            return;
+        }
+
+        //人类玩家
+        if((game_turn.get_play_cards_count())%4==game_turn.player1.getTurn())
+        {
+            //设置出牌和过按钮可见
+            LinearLayout middle_layout=findViewById(R.id.JustPlayCardsContainer);
+            middle_layout.setVisibility(View.VISIBLE);
+        }
+
+        //人机玩家
+        if((game_turn.get_play_cards_count())%4==game_turn.player2.getTurn())
+        {
+            //设置出牌和过按钮不可见
+            LinearLayout middle_layout=findViewById(R.id.JustPlayCardsContainer);
+            middle_layout.setVisibility(View.INVISIBLE);
+
+            //根据人机算法自动获取要出的牌
+            if(game_turn.get_play_cards_count()==0)
+                game_turn.player2.setSelectedCardsArrayList(game_turn.player2.firstPlay());
+            else
+                game_turn.player2.setSelectedCardsArrayList(game_turn.player2.getCards(game_turn.getLastPlayerCardsArrayList()));
+
+            //出牌动画
+            player2_plays_cards();
+            //清空人机要出的牌
+            game_turn.player2.getSelectedCardsArrayList().clear();
+        }
+
+        //人机玩家
+        if((game_turn.get_play_cards_count())%4==game_turn.player3.getTurn())
+        {
+            //设置出牌和过按钮不可见
+            LinearLayout middle_layout=findViewById(R.id.JustPlayCardsContainer);
+            middle_layout.setVisibility(View.INVISIBLE);
+
+            //根据人机算法自动获取要出的牌
+            if(game_turn.get_play_cards_count()==0)
+                game_turn.player3.setSelectedCardsArrayList(game_turn.player3.firstPlay());
+            else
+                game_turn.player3.setSelectedCardsArrayList(game_turn.player3.getCards(game_turn.getLastPlayerCardsArrayList()));
+
+            //出牌动画
+            player3_plays_cards();
+            //清空人机要出的牌
+            game_turn.player3.getSelectedCardsArrayList().clear();
+        }
+
+        //人机玩家
+        if((game_turn.get_play_cards_count())%4==game_turn.player4.getTurn())
+        {
+            //设置出牌和过按钮不可见
+            LinearLayout middle_layout=findViewById(R.id.JustPlayCardsContainer);
+            middle_layout.setVisibility(View.INVISIBLE);
+
+            //根据人机算法自动获取要出的牌
+            if(game_turn.get_play_cards_count()==0)
+                game_turn.player4.setSelectedCardsArrayList(game_turn.player4.firstPlay());
+            else
+                game_turn.player4.setSelectedCardsArrayList(game_turn.player4.getCards(game_turn.getLastPlayerCardsArrayList()));
+
+            //出牌动画
+            player4_plays_cards();
+            //清空人机要出的牌
+            game_turn.player4.getSelectedCardsArrayList().clear();
+        }
     }
 
     //将一张牌水平地添加到线性布局中
@@ -214,7 +307,7 @@ public class GamingInterfaceActivity extends AppCompatActivity {
         boolean result=CDDGameRule.judge(cardGroup,new CardGroup(game_turn.getLastPlayerCardsArrayList()));
 
         //所选的牌不符合规则，重新选择
-        if(false)//result==
+        if(result==false)
         {
             game_turn.player1.getSelectedCardsArrayList().clear();
             Toast.makeText(this, "所选牌不符合规则", Toast.LENGTH_LONG).show();
@@ -263,6 +356,9 @@ public class GamingInterfaceActivity extends AppCompatActivity {
 
             //清空玩家选择出了的牌
             selectedCardImage.clear();
+
+            //游戏次数加1
+            game_turn.play_cards_count_add_one();//***************************************************************************************
         }
     }
 
@@ -445,7 +541,8 @@ public class GamingInterfaceActivity extends AppCompatActivity {
             set_first_card_no_offset(just_played_cards_layout);
 
             //清空玩家的selected_Cards数组
-            game_turn.player4.getSelectedCardsArrayList().clear();       }
+            game_turn.player4.getSelectedCardsArrayList().clear();
+        }
     }
 
 }

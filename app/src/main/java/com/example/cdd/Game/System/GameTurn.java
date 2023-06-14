@@ -1,6 +1,7 @@
 package com.example.cdd.Game.System;
 
 import android.media.MediaParser;
+import android.os.Handler;
 import android.util.Log;
 
 import com.example.cdd.Game.Domain.CardGroup;
@@ -10,14 +11,36 @@ import com.example.cdd.Game.Domain.PokerType;
 import com.example.cdd.Game.Domain.RobotPlayer;
 import com.example.cdd.Game.Rule.GameRule;
 import com.example.cdd.Game.UI.GamingInterfaceActivity;
+import com.example.cdd.Game.UI.MyObserver;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 //游戏的主要运行过程
 public class GameTurn {
-    //activity
-    private GamingInterfaceActivity activity;
+
+    private Handler handler;
+
+
+    //被观察者实例，GameTurn对象就是被观察者
+    public MyObservable myObservable=new MyObservable();
+
+    //被观察者
+    public class MyObservable{
+        //观察者，Activity对象就是观察者
+        private MyObserver observer;
+
+        public void setObserver(MyObserver Observer)
+        {
+            observer=Observer;
+        }
+
+        //被观察者(GameTurn对象)通知观察者(Activity对象)
+        public void notifyObservers()
+        {
+            observer.update();
+        }
+    }
 
     //出牌的次数
     private int play_cards_count=0;
@@ -43,14 +66,30 @@ public class GameTurn {
     //player4得分
     int score4;
 
+    public int get_play_cards_count()
+    {
+        return play_cards_count;
+    }
+
+    public void play_cards_count_add_one()
+    {
+        play_cards_count++;
+    }
+
+    public boolean getIsGameOver()
+    {
+        return is_GameOver;
+    }
+
+    //记录上一位玩家的牌
+    ArrayList<Integer> LastPlayerCards=new ArrayList<>();
+
     //设置游戏结束
     public void setGameOver()
     {
         is_GameOver=true;
     }
 
-    //记录上一位玩家的牌
-    ArrayList<Integer> LastPlayerCards=new ArrayList<>();
 
     //返回上一位玩家的牌数组
     public ArrayList<Integer> getLastPlayerCardsArrayList()
@@ -59,9 +98,53 @@ public class GameTurn {
     }
 
     //构造函数，初始时为每位玩家发牌,并正常排序玩家的牌
-    public GameTurn(GamingInterfaceActivity Activity)
+    public GameTurn()
     {
-        activity=Activity;
+        score1=0;
+        score2=0;
+        score3=0;
+        score4=0;
+        shuffle_cards();;
+        deal_cards();
+        player1.normal_sort();
+        player2.normal_sort();
+        player3.normal_sort();
+        player4.normal_sort();
+
+        //初始化各玩家的出牌顺序
+        if(player1.getArrayList().get(0)==1)
+        {
+            player1.setTurn(0);
+            player2.setTurn(1);
+            player4.setTurn(2);
+            player3.setTurn(3);
+        }
+        else if(player2.getArrayList().get(0)==1)
+        {
+            player2.setTurn(0);
+            player4.setTurn(1);
+            player3.setTurn(2);
+            player1.setTurn(3);
+        }
+        else if(player3.getArrayList().get(0)==1)
+        {
+            player3.setTurn(0);
+            player1.setTurn(1);
+            player2.setTurn(2);
+            player4.setTurn(3);
+        }
+        else
+        {
+            player4.setTurn(0);
+            player3.setTurn(1);
+            player1.setTurn(2);
+            player2.setTurn(3);
+        }
+    }
+
+    public GameTurn(Handler HANDLER)
+    {
+        handler=HANDLER;
 
         score1=0;
         score2=0;
@@ -105,7 +188,7 @@ public class GameTurn {
         }
     }
 
-    //牌局进行中
+    /*//牌局进行中
     public void PlayingGame()
     {
         Log.e("inf",""+player1.getTurn());
@@ -170,6 +253,36 @@ public class GameTurn {
 
         //出牌次数加一，便于下次判断轮到谁出牌
         play_cards_count+=1;
+    }*/
+
+    public void playing_game()
+    {
+        while(is_GameOver==false)
+        {
+            if(play_cards_count%4==player1.getTurn())
+            {
+
+            }
+
+            if(play_cards_count%4==player2.getTurn())
+            {
+                myObservable.notifyObservers();
+                play_cards_count++;
+            }
+
+            if(play_cards_count%4==player3.getTurn())
+            {
+                myObservable.notifyObservers();
+                play_cards_count++;
+            }
+
+            if(play_cards_count%4==player4.getTurn())
+            {
+                myObservable.notifyObservers();
+                play_cards_count++;
+            }
+        }
+
     }
 
     //洗牌
