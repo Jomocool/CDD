@@ -149,7 +149,7 @@ public class GameTurn {
             else
                 player3.setSelectedCardsArrayList(player3.getCards(LastPlayerCards));
             //出牌动画
-            activity.player4_plays_cards();
+            activity.player3_plays_cards();
             //清空人机要出的牌
             player3.getSelectedCardsArrayList().clear();
         }

@@ -1,7 +1,6 @@
 package com.example.cdd.Game.UI;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cdd.Game.Domain.CardGroup;
-import com.example.cdd.Game.Domain.Cards;
 import com.example.cdd.Game.Domain.Player;
 import com.example.cdd.Game.Rule.CDDGameRule;
 import com.example.cdd.Game.System.GameTurn;
@@ -20,7 +18,6 @@ import com.example.cdd.GameOver.UI.Defeat;
 import com.example.cdd.GameOver.UI.Victory;
 import com.example.cdd.R;
 
-import java.sql.Array;
 import java.util.ArrayList;
 
 public class GamingInterfaceActivity extends AppCompatActivity {
@@ -39,7 +36,9 @@ public class GamingInterfaceActivity extends AppCompatActivity {
         addPlayer2AllCards(game_turn.player2);
         addPlayer3AllCards(game_turn.player3);
 
-        game_turn.PlayingGame();
+        //game_turn.PlayingGame();
+
+        player2_plays_cards();
     }
 
     //将一张牌水平地添加到线性布局中
@@ -70,6 +69,27 @@ public class GamingInterfaceActivity extends AppCompatActivity {
         layout.addView(imageView);
     }
 
+    //清空中间的牌
+    void middle_layout_clear(LinearLayout layout)
+    {
+        for(int i=layout.getChildCount()-1;i>=0;i--)
+        {
+            CardImage image=(CardImage) layout.getChildAt(i);
+            layout.removeView(image);
+        }
+    }
+
+    //设置第一张牌不偏移
+    void set_first_card_no_offset(LinearLayout layout)
+    {
+        if(layout.getChildCount()!=0)
+        {
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMarginStart(0);
+            layout.getChildAt(0).setLayoutParams(lp);
+        }
+    }
+
     //将玩家1的所有牌添加到线性布局中
     void addPlayer1AllCards(Player player)
     {
@@ -78,17 +98,7 @@ public class GamingInterfaceActivity extends AppCompatActivity {
         for(int i=0;i<player.getArrayList().size();i++)
         {
             //新建一张图片资源，并且记录牌号和花色对应的序号值
-            CardImage card_image=new CardImage(this,player.getArrayList().get(i));
-
-            //设置一张牌图片的属性
-            card_image.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            card_image.setMaxWidth(180);
-            card_image.setAdjustViewBounds(true);
-
-            //添加资源图片
-            String image_name="card"+player.getArrayList().get(i);
-            int resourceId =getResources().getIdentifier(image_name,"mipmap",getPackageName());
-            card_image.setImageResource(resourceId);
+            CardImage card_image=new CardImage(this,player.getArrayList().get(i),180);
 
             //加入水平布局中
             addToHorizontalLinearLayout(card_image,layout);
@@ -130,16 +140,7 @@ public class GamingInterfaceActivity extends AppCompatActivity {
         for(int i=0;i<player4.getArrayList().size();i++)
         {
             //新建一张图片资源，并且记录牌号和花色对应的序号值
-            CardImage card_image=new CardImage(this,player4.getArrayList().get(i));
-
-            //设置一张牌图片的属性
-            card_image.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            card_image.setMaxWidth(140);
-            card_image.setAdjustViewBounds(true);
-
-            //添加资源图片
-            int resourceId =getResources().getIdentifier("poker_back","mipmap",getPackageName());
-            card_image.setImageResource(resourceId);
+            CardImage card_image=new CardImage(this,140);
 
             //加入水平布局中
             addToHorizontalLinearLayout(card_image,layout);
@@ -154,16 +155,9 @@ public class GamingInterfaceActivity extends AppCompatActivity {
         for(int i=0;i<player2.getArrayList().size();i++)
         {
             //新建一张图片资源，并且记录牌号和花色对应的序号值
-            CardImage card_image=new CardImage(this,player2.getArrayList().get(i));
+            CardImage card_image=new CardImage(this,200,true);
 
-            //设置一张牌图片的属性
-            card_image.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            card_image.setMaxHeight(200);
-            card_image.setAdjustViewBounds(true);
-
-            //添加资源图片
-            int resourceId =getResources().getIdentifier("poker_back","mipmap",getPackageName());
-            card_image.setImageResource(resourceId);
+            //加入竖直布局
             addToVerticalLinearLayout(card_image,layout);
         }
     }
@@ -176,16 +170,9 @@ public class GamingInterfaceActivity extends AppCompatActivity {
         for(int i=0;i<player3.getArrayList().size();i++)
         {
             //新建一张图片资源，并且记录牌号和花色对应的序号值
-            CardImage card_image=new CardImage(this,player3.getArrayList().get(i));
+            CardImage card_image=new CardImage(this,200,true);
 
-            //设置一张牌图片的属性
-            card_image.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            card_image.setMaxHeight(200);
-            card_image.setAdjustViewBounds(true);
-
-            //添加资源图片
-            int resourceId =getResources().getIdentifier("poker_back","mipmap",getPackageName());
-            card_image.setImageResource(resourceId);
+            //加入竖直布局
             addToVerticalLinearLayout(card_image,layout);
         }
     }
@@ -203,6 +190,8 @@ public class GamingInterfaceActivity extends AppCompatActivity {
         LinearLayout linearLayout=findViewById(R.id.playerCardsContainer);
         LinearLayout justPlayedCardLayout=findViewById(R.id.JustPlayCardsContainer);
 
+        int select_count=0;
+
         //点击出牌，会将点击的牌加入到player1的selectedCardsArrayList数组中
         for(int i=0;i<linearLayout.getChildCount();i++)
         {
@@ -210,14 +199,22 @@ public class GamingInterfaceActivity extends AppCompatActivity {
             if(image.get_isSelected()==true)
             {
                 game_turn.player1.getSelectedCardsArrayList().add((Integer) image.getSerial_number());
+                select_count+=1;
             }
+        }
+
+        //玩家没选牌
+        if(select_count==0)
+        {
+            Toast.makeText(this,"出牌数不能为0，请重新选择",Toast.LENGTH_SHORT).show();
+            return;
         }
 
         CardGroup cardGroup=new CardGroup(game_turn.player1.getSelectedCardsArrayList());
         boolean result=CDDGameRule.judge(cardGroup,new CardGroup(game_turn.getLastPlayerCardsArrayList()));
 
         //所选的牌不符合规则，重新选择
-        if(result==false)
+        if(false)//result==
         {
             game_turn.player1.getSelectedCardsArrayList().clear();
             Toast.makeText(this, "所选牌不符合规则", Toast.LENGTH_LONG).show();
@@ -269,10 +266,21 @@ public class GamingInterfaceActivity extends AppCompatActivity {
         }
     }
 
+    //人类玩家选择过
+    public void click_pass(View view) {
+
+    }
+
     //机器人2号打牌
     //机器人将牌这一轮要出的牌传给它的selectedCardsArrayList中
     public void player2_plays_cards()
     {
+        //测试用
+        for(int i=0;i<5;i++)
+        {
+            game_turn.player2.getSelectedCardsArrayList().add(game_turn.player2.getArrayList().get(i));
+        }
+
         ArrayList<Integer> list=game_turn.player2.getSelectedCardsArrayList();
 
         LinearLayout player2_cards_layout=findViewById(R.id.player2CardsContainer);
@@ -437,28 +445,7 @@ public class GamingInterfaceActivity extends AppCompatActivity {
             set_first_card_no_offset(just_played_cards_layout);
 
             //清空玩家的selected_Cards数组
-            game_turn.player4.getSelectedCardsArrayList().clear();
-        }
+            game_turn.player4.getSelectedCardsArrayList().clear();       }
     }
 
-    //清空中间的牌
-    void middle_layout_clear(LinearLayout layout)
-    {
-        for(int i=layout.getChildCount()-1;i>=0;i--)
-        {
-            CardImage image=(CardImage) layout.getChildAt(i);
-            layout.removeView(image);
-        }
-    }
-
-    //设置第一张牌不偏移
-    void set_first_card_no_offset(LinearLayout layout)
-    {
-        if(layout.getChildCount()!=0)
-        {
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-            lp.setMarginStart(0);
-            layout.getChildAt(0).setLayoutParams(lp);
-        }
-    }
 }
