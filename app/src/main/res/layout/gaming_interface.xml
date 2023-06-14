@@ -102,6 +102,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="20dp"
             android:backgroundTint="@color/orange"
+            android:onClick="click_pass"
             android:text="过" />
     </LinearLayout>
 

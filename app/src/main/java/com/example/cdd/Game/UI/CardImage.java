@@ -19,11 +19,34 @@ public class CardImage extends androidx.appcompat.widget.AppCompatImageView impl
         isSelected=false;
     }
 
-    public CardImage(Context context,int s)
+    public CardImage(Context context,int Max_width)
     {
         super(context);
-        serial_number=s;
         isSelected=false;
+
+        //设置布局方式
+        setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        setMaxWidth(Max_width);
+        setAdjustViewBounds(true);
+
+        //添加资源图片
+        int resourceId =getResources().getIdentifier("poker_back","mipmap",context.getPackageName());
+        setImageResource(resourceId);
+    }
+
+    public CardImage(Context context,int Max_height,boolean flag)
+    {
+        super(context);
+        isSelected=false;
+
+        //设置布局方式
+        setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        setMaxHeight(Max_height);
+        setAdjustViewBounds(true);
+
+        //添加资源图片
+        int resourceId =getResources().getIdentifier("poker_back","mipmap",context.getPackageName());
+        setImageResource(resourceId);
     }
 
     public CardImage(Context context,int s,int Max_width)
