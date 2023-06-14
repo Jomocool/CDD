@@ -45,7 +45,7 @@ public class Player
     }
 
     //花色排序
-    void suits_sort(ArrayList<Integer> list)
+    public void suits_sort(ArrayList<Integer> list)
     {
         ArrayList<Integer> diamond=new ArrayList();
         ArrayList<Integer> plum=new ArrayList();
