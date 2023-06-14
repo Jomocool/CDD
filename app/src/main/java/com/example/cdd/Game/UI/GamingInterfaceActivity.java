@@ -2,6 +2,7 @@ package com.example.cdd.Game.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,14 +23,16 @@ import com.example.cdd.GameOver.UI.Defeat;
 import com.example.cdd.GameOver.UI.Victory;
 import com.example.cdd.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class GamingInterfaceActivity extends AppCompatActivity implements MyObserver{
 
     //游戏系统
-    private GameTurn game_turn=new GameTurn();
+    private GameTurn game_turn=new GameTurn(this);
 
-    //消息传递
+    /*//消息传递
     private Handler handle=new Handler(Looper.getMainLooper()) {
         public void handleMessage(Message msg)
         {
@@ -38,8 +42,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
             }
         }
 
-    };
-
+    };*/
 
     //记录要出的牌
     private ArrayList<CardImage> selectedCardImage = new ArrayList<>();
@@ -56,9 +59,8 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         //为被观察者(GameTurn对象)设置观察者(GamingInterfaceActivity对象）
         game_turn.myObservable.setObserver(this);
 
-        //game_turn.playing_game();
+        game_turn.PlayingGame();
     }
-
 
     //更新界面，用于观察者接口
     public void update()
@@ -132,6 +134,16 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
             //清空人机要出的牌
             game_turn.player4.getSelectedCardsArrayList().clear();
         }
+    }
+
+    public void set_selection_visible()
+    {
+        findViewById(R.id.Player_selection).setVisibility(View.VISIBLE);
+    }
+
+    public void set_selection_invisible()
+    {
+        findViewById(R.id.Player_selection).setVisibility(View.INVISIBLE);
     }
 
     //将一张牌水平地添加到线性布局中
@@ -307,7 +319,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         boolean result=CDDGameRule.judge(cardGroup,new CardGroup(game_turn.getLastPlayerCardsArrayList()));
 
         //所选的牌不符合规则，重新选择
-        if(result==false)
+        if(!result)
         {
             game_turn.player1.getSelectedCardsArrayList().clear();
             Toast.makeText(this, "所选牌不符合规则", Toast.LENGTH_LONG).show();
@@ -357,15 +369,16 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
             //清空玩家选择出了的牌
             selectedCardImage.clear();
 
-            //游戏次数加1
-            game_turn.play_cards_count_add_one();//***************************************************************************************
+            game_turn.play_cards_count_add_one();
         }
     }
 
     //人类玩家选择过
     public void click_pass(View view) {
-
+        game_turn.play_cards_count_add_one();
     }
+
+
 
     //机器人2号打牌
     //机器人将牌这一轮要出的牌传给它的selectedCardsArrayList中
@@ -430,11 +443,40 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         }
     }
 
+    public void player2_plays_cards_with_delay()
+    {
+        //设置人类玩家选择按钮不可见
+        set_selection_invisible();
+        new CountDownTimer(3000,1000)
+        {
+            TextView textView;
+            @Override
+            public void onTick(long millisUntilFinished) {
+                textView=findViewById(R.id.textView2);
+                textView.setText(millisUntilFinished/1000+"s");
+            }
+
+            @Override
+            public void onFinish() {
+                player2_plays_cards();
+                game_turn.play_cards_count_add_one();
+                textView.setText("");
+                game_turn.PlayingGame();
+                this.cancel();
+            }
+        }.start();
+    }
 
     //机器人3号打牌
     //机器人将牌这一轮要出的牌传给它的selectedCardsArrayList中
     public void player3_plays_cards()
     {
+        /*//测试用
+        for(int i=0;i<5;i++)
+        {
+            game_turn.player3.getSelectedCardsArrayList().add(game_turn.player3.getArrayList().get(i));
+        }*/
+
         ArrayList<Integer> list=game_turn.player3.getSelectedCardsArrayList();
 
         LinearLayout player3_cards_layout=findViewById(R.id.player3CardsContainer);
@@ -488,10 +530,41 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         }
     }
 
+    public void player3_plays_cards_with_delay()
+    {
+        //设置人类玩家选择按钮不可见
+        set_selection_invisible();
+        new CountDownTimer(3000,1000)
+        {
+            TextView textView;
+            @Override
+            public void onTick(long millisUntilFinished) {
+                textView=findViewById(R.id.textView3);
+                textView.setText(millisUntilFinished/1000+"s");
+            }
+
+            @Override
+            public void onFinish() {
+                player3_plays_cards();
+                game_turn.play_cards_count_add_one();
+                textView.setText("");
+                game_turn.PlayingGame();
+                this.cancel();
+            }
+        }.start();
+    }
+
+
     //机器人4号打牌
     //机器人将牌这一轮要出的牌传给它的selectedCardsArrayList中
     public void player4_plays_cards()
     {
+        /*//测试用
+        for(int i=0;i<5;i++)
+        {
+            game_turn.player4.getSelectedCardsArrayList().add(game_turn.player4.getArrayList().get(i));
+        }*/
+
         ArrayList<Integer> list=game_turn.player4.getSelectedCardsArrayList();
 
         LinearLayout player4_cards_layout=findViewById(R.id.player4CardsContainer);
@@ -545,4 +618,27 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         }
     }
 
+    public void player4_plays_cards_with_delay()
+    {
+        //设置人类玩家选择按钮不可见
+        set_selection_invisible();
+        new CountDownTimer(3000,1000)
+        {
+            TextView textView;
+            @Override
+            public void onTick(long millisUntilFinished) {
+                textView=findViewById(R.id.textView4);
+                textView.setText(millisUntilFinished/1000+"s");
+            }
+
+            @Override
+            public void onFinish() {
+                player4_plays_cards();
+                game_turn.play_cards_count_add_one();
+                textView.setText("");
+                game_turn.PlayingGame();
+                this.cancel();
+            }
+        }.start();
+    }
 }

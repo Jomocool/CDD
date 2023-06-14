@@ -1,7 +1,5 @@
 package com.example.cdd.Game.System;
 
-import android.media.MediaParser;
-import android.os.Handler;
 import android.util.Log;
 
 import com.example.cdd.Game.Domain.CardGroup;
@@ -13,14 +11,14 @@ import com.example.cdd.Game.Rule.GameRule;
 import com.example.cdd.Game.UI.GamingInterfaceActivity;
 import com.example.cdd.Game.UI.MyObserver;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 //游戏的主要运行过程
 public class GameTurn {
-
-    private Handler handler;
-
+    //activity实例
+    GamingInterfaceActivity activity;
 
     //被观察者实例，GameTurn对象就是被观察者
     public MyObservable myObservable=new MyObservable();
@@ -90,7 +88,6 @@ public class GameTurn {
         is_GameOver=true;
     }
 
-
     //返回上一位玩家的牌数组
     public ArrayList<Integer> getLastPlayerCardsArrayList()
     {
@@ -98,53 +95,9 @@ public class GameTurn {
     }
 
     //构造函数，初始时为每位玩家发牌,并正常排序玩家的牌
-    public GameTurn()
+    public GameTurn(GamingInterfaceActivity Activity)
     {
-        score1=0;
-        score2=0;
-        score3=0;
-        score4=0;
-        shuffle_cards();;
-        deal_cards();
-        player1.normal_sort();
-        player2.normal_sort();
-        player3.normal_sort();
-        player4.normal_sort();
-
-        //初始化各玩家的出牌顺序
-        if(player1.getArrayList().get(0)==1)
-        {
-            player1.setTurn(0);
-            player2.setTurn(1);
-            player4.setTurn(2);
-            player3.setTurn(3);
-        }
-        else if(player2.getArrayList().get(0)==1)
-        {
-            player2.setTurn(0);
-            player4.setTurn(1);
-            player3.setTurn(2);
-            player1.setTurn(3);
-        }
-        else if(player3.getArrayList().get(0)==1)
-        {
-            player3.setTurn(0);
-            player1.setTurn(1);
-            player2.setTurn(2);
-            player4.setTurn(3);
-        }
-        else
-        {
-            player4.setTurn(0);
-            player3.setTurn(1);
-            player1.setTurn(2);
-            player2.setTurn(3);
-        }
-    }
-
-    public GameTurn(Handler HANDLER)
-    {
-        handler=HANDLER;
+        activity=Activity;
 
         score1=0;
         score2=0;
@@ -186,16 +139,17 @@ public class GameTurn {
             player1.setTurn(2);
             player2.setTurn(3);
         }
+
+
     }
 
-    /*//牌局进行中
+    //牌局进行中
     public void PlayingGame()
     {
         Log.e("inf",""+player1.getTurn());
         Log.e("inf",""+player2.getTurn());
         Log.e("inf",""+player3.getTurn());
         Log.e("inf",""+player4.getTurn());
-
 
         if(is_GameOver==true)
         {
@@ -205,7 +159,10 @@ public class GameTurn {
         //人类玩家
         if((play_cards_count%4)==player1.getTurn())
         {
-            //界面中的点击事件实现了出牌功能
+            //设置玩家按键按钮可视化
+            activity.set_selection_visible();
+
+            //界面中的点击事件实现了出牌功能(点击出牌或者不出）
 
         }
 
@@ -218,9 +175,10 @@ public class GameTurn {
             else
                 player2.setSelectedCardsArrayList(player2.getCards(LastPlayerCards));
             //出牌动画
-            activity.player2_plays_cards();
+            activity.player2_plays_cards_with_delay();
             //清空人机要出的牌
             player2.getSelectedCardsArrayList().clear();
+
         }
 
         //人机3
@@ -232,9 +190,10 @@ public class GameTurn {
             else
                 player3.setSelectedCardsArrayList(player3.getCards(LastPlayerCards));
             //出牌动画
-            activity.player3_plays_cards();
+            activity.player3_plays_cards_with_delay();
             //清空人机要出的牌
             player3.getSelectedCardsArrayList().clear();
+
         }
 
         //人机4
@@ -246,16 +205,13 @@ public class GameTurn {
             else
                 player4.setSelectedCardsArrayList(player4.getCards(LastPlayerCards));
             //出牌动画
-            activity.player4_plays_cards();
+            activity.player4_plays_cards_with_delay();
             //清空人机要出的牌
             player4.getSelectedCardsArrayList().clear();
         }
+    }
 
-        //出牌次数加一，便于下次判断轮到谁出牌
-        play_cards_count+=1;
-    }*/
-
-    public void playing_game()
+    /*public void playing_game()
     {
         while(is_GameOver==false)
         {
@@ -283,7 +239,7 @@ public class GameTurn {
             }
         }
 
-    }
+    }*/
 
     //洗牌
     void shuffle_cards()
