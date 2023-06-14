@@ -146,10 +146,10 @@ public class GameTurn {
     //牌局进行中
     public void PlayingGame()
     {
-        Log.e("inf",""+player1.getTurn());
+        /*Log.e("inf",""+player1.getTurn());
         Log.e("inf",""+player2.getTurn());
         Log.e("inf",""+player3.getTurn());
-        Log.e("inf",""+player4.getTurn());
+        Log.e("inf",""+player4.getTurn());*/
 
         if(is_GameOver==true)
         {

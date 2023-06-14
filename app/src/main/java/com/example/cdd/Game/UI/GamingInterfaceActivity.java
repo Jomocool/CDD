@@ -4,11 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,26 +20,14 @@ import com.example.cdd.GameOver.UI.Defeat;
 import com.example.cdd.GameOver.UI.Victory;
 import com.example.cdd.R;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 public class GamingInterfaceActivity extends AppCompatActivity implements MyObserver{
 
+    Handler handler=new Handler();
+
     //游戏系统
     private GameTurn game_turn=new GameTurn(this);
-
-    /*//消息传递
-    private Handler handle=new Handler(Looper.getMainLooper()) {
-        public void handleMessage(Message msg)
-        {
-            if(msg.what==0)
-            {
-
-            }
-        }
-
-    };*/
 
     //记录要出的牌
     private ArrayList<CardImage> selectedCardImage = new ArrayList<>();
@@ -390,6 +375,11 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
             game_turn.player2.getSelectedCardsArrayList().add(game_turn.player2.getArrayList().get(i));
         }*/
 
+        for(int i=0;i<game_turn.player2.getSelectedCardsArrayList().size();i++)
+        {
+            Log.e("玩家2的selectedcards",""+game_turn.player2.getSelectedCardsArrayList().get(i));
+        }
+
         ArrayList<Integer> list=game_turn.player2.getSelectedCardsArrayList();
 
         LinearLayout player2_cards_layout=findViewById(R.id.player2CardsContainer);
@@ -398,10 +388,12 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         if(list.size()==0)//该玩家选择过
         {
             //在玩家处显示过的图标，并在下次删除
+            Log.e("玩家2","selectedCard为0");
 
         }
         else
         {
+            Log.e("玩家2","+++++++++++++++++++++++++");
             //①先清空中间显示的牌
             middle_layout_clear(just_played_cards_layout);
 
@@ -458,7 +450,12 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
 
             @Override
             public void onFinish() {
-                player2_plays_cards();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        player2_plays_cards();
+                    }
+                });
                 game_turn.play_cards_count_add_one();
                 textView.setText("");
                 game_turn.PlayingGame();
@@ -477,6 +474,11 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
             game_turn.player3.getSelectedCardsArrayList().add(game_turn.player3.getArrayList().get(i));
         }*/
 
+        for(int i=0;i<game_turn.player3.getSelectedCardsArrayList().size();i++)
+        {
+            Log.e("玩家3的selectedcards",""+game_turn.player3.getSelectedCardsArrayList().get(i));
+        }
+
         ArrayList<Integer> list=game_turn.player3.getSelectedCardsArrayList();
 
         LinearLayout player3_cards_layout=findViewById(R.id.player3CardsContainer);
@@ -485,10 +487,12 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         if(list.size()==0)//该玩家选择过
         {
             //在玩家处显示过的图标，并在下次删除
+            Log.e("玩家3","selectedCard为0");
 
         }
         else
         {
+            Log.e("玩家3","+++++++++++++++++++++++++");
             //①先清空中间显示的牌
             middle_layout_clear(just_played_cards_layout);
 
@@ -545,7 +549,12 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
 
             @Override
             public void onFinish() {
-                player3_plays_cards();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        player3_plays_cards();
+                    }
+                });
                 game_turn.play_cards_count_add_one();
                 textView.setText("");
                 game_turn.PlayingGame();
@@ -565,6 +574,11 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
             game_turn.player4.getSelectedCardsArrayList().add(game_turn.player4.getArrayList().get(i));
         }*/
 
+        for(int i=0;i<game_turn.player4.getSelectedCardsArrayList().size();i++)
+        {
+            Log.e("玩家4的selectedcards",""+game_turn.player4.getSelectedCardsArrayList().get(i));
+        }
+
         ArrayList<Integer> list=game_turn.player4.getSelectedCardsArrayList();
 
         LinearLayout player4_cards_layout=findViewById(R.id.player4CardsContainer);
@@ -573,10 +587,12 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         if(list.size()==0)//该玩家选择过
         {
             //在玩家处显示过的图标，并在下次删除
+            Log.e("玩家4","selectedCard为0");
 
         }
         else
         {
+            Log.e("玩家4","+++++++++++++++++++++++++");
             //①先清空中间显示的牌
             middle_layout_clear(just_played_cards_layout);
 
@@ -633,7 +649,12 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
 
             @Override
             public void onFinish() {
-                player4_plays_cards();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        player4_plays_cards();
+                    }
+                });
                 game_turn.play_cards_count_add_one();
                 textView.setText("");
                 game_turn.PlayingGame();
