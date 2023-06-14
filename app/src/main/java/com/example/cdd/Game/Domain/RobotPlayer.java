@@ -1,7 +1,8 @@
 package com.example.cdd.Game.Domain;
 
+import com.example.cdd.Game.Rule.CDDGameRule;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class RobotPlayer extends Player{
@@ -21,17 +22,17 @@ public class RobotPlayer extends Player{
             case c3:
                 return findMinC3(LastPlayerCards);
             case c11111Five:
-                return findC11111Five(LastPlayerCards);
+                return findMinC11111Five(LastPlayerCards);
             case c41:
                 tmp=findMinC41(LastPlayerCards);
                 if(tmp.size()>0)return tmp;
-                return findC11111Five(LastPlayerCards);
+                return findMinC11111Five(LastPlayerCards);
             case c32:
                 tmp=findMinC32(LastPlayerCards);
                 if(tmp.size()>0)return tmp;
                 tmp=findMinC41(LastPlayerCards);
                 if(tmp.size()>0)return tmp;
-                return findC11111Five(LastPlayerCards);
+                return findMinC11111Five(LastPlayerCards);
             case cFive:
                 tmp=findMinCFive(LastPlayerCards);
                 if(tmp.size()>0)return tmp;
@@ -39,7 +40,7 @@ public class RobotPlayer extends Player{
                 if(tmp.size()>0)return tmp;
                 tmp=findMinC41(LastPlayerCards);
                 if(tmp.size()>0)return tmp;
-                return findC11111Five(LastPlayerCards);
+                return findMinC11111Five(LastPlayerCards);
             case c11111:
                 tmp=findMinC11111(LastPlayerCards);
                 if(tmp.size()>0)return tmp;
@@ -49,7 +50,7 @@ public class RobotPlayer extends Player{
                 if(tmp.size()>0)return tmp;
                 tmp=findMinC41(LastPlayerCards);
                 if(tmp.size()>0)return tmp;
-                return findC11111Five(LastPlayerCards);
+                return findMinC11111Five(LastPlayerCards);
         }
         return tmp;
     }
@@ -61,8 +62,7 @@ public class RobotPlayer extends Player{
         ArrayList<Integer>curPlayerCards=new ArrayList<>();
         CardGroup LastPlayerGroup=new CardGroup(LastPlayerCards);
 
-        ArrayList<Integer>cards=this.cards_list;
-        Collections.sort(cards);//按牌点从小到大排序
+        ArrayList<Integer>cards=new ArrayList<>(cards_list);
 
         //如果当前玩家的最大单牌都没有上一位出牌玩家的出的牌大，那就要不起，返回空数组
         if(cards.get(cards.size()-1)<LastPlayerGroup.getMaxCard()){
@@ -84,8 +84,7 @@ public class RobotPlayer extends Player{
         ArrayList<Integer>curPlayerCards=new ArrayList<>();
         CardGroup LastPlayerGroup=new CardGroup(LastPlayerCards);
 
-        ArrayList<Integer>cards=this.cards_list;
-        Collections.sort(cards);//按牌点从小到大排序
+        ArrayList<Integer>cards=new ArrayList<>(cards_list);
 
         if(cards.get(cards.size()-1)<LastPlayerGroup.getMaxCard()){
             return curPlayerCards;
@@ -111,8 +110,7 @@ public class RobotPlayer extends Player{
         ArrayList<Integer>curPlayerCards=new ArrayList<>();
         CardGroup LastPlayerGroup=new CardGroup(LastPlayerCards);
 
-        ArrayList<Integer>cards=this.cards_list;
-        Collections.sort(cards);//按牌点从小到大排序
+        ArrayList<Integer>cards=new ArrayList<>(cards_list);
 
         if(cards.get(cards.size()-1)<LastPlayerGroup.getMaxCard()){
             return curPlayerCards;
@@ -139,8 +137,7 @@ public class RobotPlayer extends Player{
     public ArrayList<Integer> findMinC11111(ArrayList<Integer>LastPlayerCards){
         CardGroup LastPlayerGroup=new CardGroup(LastPlayerCards);
 
-        ArrayList<Integer>cards=this.cards_list;
-        Collections.sort(cards);//按牌点从小到大排序
+        ArrayList<Integer>cards=new ArrayList<>(cards_list);
 
         for(int i=0;i<cards.size()-4;i++){
             for(int j=i+1;j<cards.size()-3;j++){
@@ -154,7 +151,7 @@ public class RobotPlayer extends Player{
                             tmp.add(cards.get(l));
                             tmp.add(cards.get(m));
                             CardGroup group=new CardGroup(tmp);
-                            if(isContinuous(tmp)&&group.getMaxCard()>LastPlayerGroup.getMaxCard()){
+                            if(isContinuous(tmp)&& CDDGameRule.judge(group,LastPlayerGroup)){
                                 cards_list.removeAll(tmp);
                                 return tmp;
                             }
@@ -170,21 +167,24 @@ public class RobotPlayer extends Player{
     public ArrayList<Integer> findMinCFive(ArrayList<Integer>LastPlayerCards){
         CardGroup LastPlayerGroup=new CardGroup(LastPlayerCards);
 
+        ArrayList<Integer>cards=new ArrayList<>(cards_list);
+        suits_sort(cards);
+
         int index=0;
-        while(index<cards_list.size()-4){
+        while(index<cards.size()-4){
             int cur=index;
             ArrayList<Integer>tmp=new ArrayList<>();
-            while(cur+1<cards_list.size()&&transferToPattern(cards_list.get(cur))==transferToPattern(cards_list.get(cur+1))){
-                tmp.add(cards_list.get(cur++));
+            while(cur+1<cards.size()&&transferToPattern(cards.get(cur))==transferToPattern(cards.get(cur+1))){
+                tmp.add(cards.get(cur++));
             }
-            tmp.add(cards_list.get(cur));
+            tmp.add(cards.get(cur));
 
             if(tmp.size()>=5){
                 for(int i=0;i<tmp.size()-4;i++){
-                    List<Integer>list=tmp.subList(index+i,index+i+5);
+                    List<Integer>list=tmp.subList(i,i+5);
                     ArrayList<Integer>tmpList=new ArrayList<Integer>(list);
                     CardGroup group=new CardGroup(tmpList);
-                    if(group.getMaxCard()>LastPlayerGroup.getMaxCard()){
+                    if(CDDGameRule.judge(group,LastPlayerGroup)){
                         cards_list.removeAll(tmpList);
                         return tmpList;
                     }
@@ -197,25 +197,28 @@ public class RobotPlayer extends Player{
         return new ArrayList<>();
     }
 
-    public ArrayList<Integer> findC11111Five(ArrayList<Integer>LastPlayerCards){
+    public ArrayList<Integer> findMinC11111Five(ArrayList<Integer>LastPlayerCards){
         CardGroup LastPlayerGroup=new CardGroup(LastPlayerCards);
 
+        ArrayList<Integer>cards=new ArrayList<>(cards_list);
+        suits_sort(cards);
+
         int index=0;
-        while(index<cards_list.size()-4){
+        while(index<cards.size()-4){
             int cur=index;
             ArrayList<Integer>tmp=new ArrayList<>();
-            while(cur+1<cards_list.size()&&transferToPattern(cards_list.get(cur))==transferToPattern(cards_list.get(cur+1))){
-                tmp.add(cards_list.get(cur++));
+            while(cur+1<cards.size()&&transferToPattern(cards.get(cur))==transferToPattern(cards.get(cur+1))){
+                tmp.add(cards.get(cur++));
             }
-            tmp.add(cards_list.get(cur));
+            tmp.add(cards.get(cur));
 
             if(tmp.size()>=5){
                 for(int i=0;i<tmp.size()-4;i++){
-                    List<Integer>list=tmp.subList(index+i,index+i+5);
+                    List<Integer>list=tmp.subList(i,i+5);
                     ArrayList<Integer>tmpList=new ArrayList<Integer>(list);
                     if(isContinuous(tmpList)){
                         CardGroup group=new CardGroup(tmpList);
-                        if(group.getMaxCard()>LastPlayerGroup.getMaxCard()){
+                        if(CDDGameRule.judge(group,LastPlayerGroup)){
                             cards_list.removeAll(tmpList);
                             return tmpList;
                         }
@@ -233,46 +236,52 @@ public class RobotPlayer extends Player{
         ArrayList<Integer>curPlayerCards=new ArrayList<>();
         CardGroup LastPlayerGroup=new CardGroup(LastPlayerCards);
 
-        ArrayList<Integer>c3Cards= findMinC3(LastPlayerCards);
+        ArrayList<Integer>cards=new ArrayList<>(cards_list);
 
-        if(c3Cards.size()==0)return curPlayerCards;
-
-        ArrayList<Integer>cards=cards_list;
-        Collections.sort(cards);
-
-        cards.remove(c3Cards.get(0));
-        cards.remove(c3Cards.get(1));
-        cards.remove(c3Cards.get(2));
+        if(cards.get(cards.size()-1)<LastPlayerGroup.getMaxCard()){
+            return curPlayerCards;
+        }
 
         int index=0;
-        ArrayList<Integer>c2Cards=new ArrayList<>();
-        while(index<cards.size()-1){
+        while(index<cards.size()-2){
             int card1=transferToNum(cards.get(index));
             int card2=transferToNum(cards.get(index+1));
-            if(card1==card2){
-                c2Cards.add(cards.get(index));
-                c2Cards.add(cards.get(index+1));
-                break;
+            int card3=transferToNum(cards.get(index+2));
+            if(card1==card2&&card2==card3){
+                ArrayList<Integer>tmp_Arr=new ArrayList<>(cards);
+                tmp_Arr.remove(cards.get(index));
+                tmp_Arr.remove(cards.get(index+1));
+                tmp_Arr.remove(cards.get(index+2));
+
+                for(int i=0;i<tmp_Arr.size()-1;i++){
+                    if(transferToNum(tmp_Arr.get(i))==transferToNum((tmp_Arr.get(i+1)))){
+                        curPlayerCards.add(cards.get(index));
+                        curPlayerCards.add(cards.get(index+1));
+                        curPlayerCards.add(cards.get(index+2));
+                        curPlayerCards.add(tmp_Arr.get(i));
+                        curPlayerCards.add(tmp_Arr.get(i+1));
+                        break;
+                    }
+                }
+
+                CardGroup group=new CardGroup(curPlayerCards);
+                if(CDDGameRule.judge(group,LastPlayerGroup)){
+                    cards_list.removeAll(curPlayerCards);
+                    return curPlayerCards;
+                }
+                curPlayerCards.clear();
             }
             index++;
         }
 
-        if(c2Cards.size()>0){
-            curPlayerCards.addAll(c3Cards);
-            curPlayerCards.addAll(c2Cards);
-            cards_list.removeAll(c3Cards);
-            cards_list.removeAll(c2Cards);
-        }
-
-        return curPlayerCards;
+        return new ArrayList<>();
     }
 
     public ArrayList<Integer> findMinC41(ArrayList<Integer>LastPlayerCards){
         CardGroup LastPlayerGroup=new CardGroup(LastPlayerCards);
         ArrayList<Integer>curPlayerCards=new ArrayList<>();
 
-        ArrayList<Integer>cards=cards_list;
-        Collections.sort(cards);
+        ArrayList<Integer>cards=new ArrayList<>(cards_list);
 
         int index=0;
         ArrayList<Integer>c4=new ArrayList<>();
@@ -281,23 +290,29 @@ public class RobotPlayer extends Player{
             int card2=transferToNum(cards.get(index+1));
             int card3=transferToNum(cards.get(index+2));
             int card4=transferToNum(cards.get(index+3));
-            if(card1==card2&&card2==card3&&card3==card4&&cards.get(index+3)>LastPlayerGroup.getMaxCard()){
+            if(card1==card2&&card2==card3&&card3==card4){
                 c4.add(cards.get(index));
                 c4.add(cards.get(index+1));
                 c4.add(cards.get(index+2));
                 c4.add(cards.get(index+3));
                 break;
             }
+            index++;
         }
 
         if(c4.size()>0){
             cards.removeAll(c4);
             curPlayerCards.addAll(c4);
             curPlayerCards.add(cards.get(0));
-            cards_list.removeAll(curPlayerCards);
+
+            CardGroup group=new CardGroup(curPlayerCards);
+            if(CDDGameRule.judge(group,LastPlayerGroup)){
+                cards_list.removeAll(curPlayerCards);
+                return curPlayerCards;
+            }
         }
 
-        return curPlayerCards;
+        return new ArrayList<>();
     }
 
     public int transferToNum(int n){
@@ -340,25 +355,6 @@ public class RobotPlayer extends Player{
         return isContinuous;
     }
 
-    public boolean isSamePattern(ArrayList<Integer>arr){
-        ArrayList<Integer>cardPattern=new ArrayList<>();
-        for(int i=0;i<arr.size();i++){
-            cardPattern.add(transferToPattern(arr.get(i)));
-        }
-
-        boolean isSamePattern=true;
-
-        //判断是否同花色
-        for (int i = 0; i < cardPattern.size() - 1; i++) {
-            if (cardPattern.get(i) != cardPattern.get(i + 1)){
-                isSamePattern = false;
-                break;
-            }
-        }
-
-        return isSamePattern;
-    }
-
     public ArrayList<Integer> firstPlay(){
         ArrayList<Integer> containDiamond3=new ArrayList<>();
         ArrayList<Integer>defaultArr=new ArrayList<>();
@@ -372,7 +368,7 @@ public class RobotPlayer extends Player{
         if(containDiamond3.size()>0&&containDiamond3.contains(1))return containDiamond3;
         containDiamond3=findMinC41(defaultArr);
         if(containDiamond3.size()>0&&containDiamond3.contains(1))return containDiamond3;
-        containDiamond3=findC11111Five(defaultArr);
+        containDiamond3= findMinC11111Five(defaultArr);
         if(containDiamond3.size()>0&&containDiamond3.contains(1))return containDiamond3;
         containDiamond3=findMinC3(defaultArr);
         if(containDiamond3.size()>0&&containDiamond3.contains(1))return containDiamond3;
@@ -381,7 +377,7 @@ public class RobotPlayer extends Player{
         containDiamond3=findMinC1(defaultArr);
         if(containDiamond3.size()>0&&containDiamond3.contains(1))return containDiamond3;
 
-        return containDiamond3;
+        return new ArrayList<>();
     }
 
     public ArrayList<Integer> maxPlayer(){
@@ -397,7 +393,7 @@ public class RobotPlayer extends Player{
         if(maxNumCards.size()>0)return maxNumCards;
         maxNumCards=findMinC41(defaultArr);
         if(maxNumCards.size()>0)return maxNumCards;
-        maxNumCards=findC11111Five(defaultArr);
+        maxNumCards= findMinC11111Five(defaultArr);
         if(maxNumCards.size()>0)return maxNumCards;
         maxNumCards=findMinC3(defaultArr);
         if(maxNumCards.size()>0)return maxNumCards;
