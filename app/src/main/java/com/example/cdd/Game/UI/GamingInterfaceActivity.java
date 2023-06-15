@@ -234,7 +234,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         for(int i=0;i<player4.getArrayList().size();i++)
         {
             //新建一张图片资源，并且记录牌号和花色对应的序号值
-            CardImage card_image=new CardImage(this,140);
+            CardImage card_image=new CardImage(this,130);
 
             //加入水平布局中
             addToHorizontalLinearLayout(card_image,layout);
@@ -249,7 +249,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         for(int i=0;i<player2.getArrayList().size();i++)
         {
             //新建一张图片资源，并且记录牌号和花色对应的序号值
-            CardImage card_image=new CardImage(this,200,true);
+            CardImage card_image=new CardImage(this,190,true);
 
             //加入竖直布局
             addToVerticalLinearLayout(card_image,layout);
@@ -264,7 +264,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         for(int i=0;i<player3.getArrayList().size();i++)
         {
             //新建一张图片资源，并且记录牌号和花色对应的序号值
-            CardImage card_image=new CardImage(this,200,true);
+            CardImage card_image=new CardImage(this,190,true);
 
             //加入竖直布局
             addToVerticalLinearLayout(card_image,layout);
@@ -280,6 +280,13 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
 
     //点击出牌按钮(人类玩家打牌)
     public void click_play_cards(View view) {
+
+        //测试用
+        for(int i=0;i<game_turn.getLastPlayerCardsArrayList().size();i++)
+        {
+            Log.e("AAA人类玩家的上家牌：",""+game_turn.getLastPlayerCardsArrayList().get(i));
+        }
+
         //布局文件
         LinearLayout linearLayout=findViewById(R.id.playerCardsContainer);
         LinearLayout justPlayedCardLayout=findViewById(R.id.JustPlayCardsContainer);
@@ -297,6 +304,12 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
             }
         }
 
+        //测试用
+        for(int i=0;i<game_turn.player1.getSelectedCardsArrayList().size();i++)
+        {
+            Log.e("AAA人类玩家选择出的牌：", " "+game_turn.player1.getSelectedCardsArrayList().get(i));
+        }
+
         //玩家没选牌
         if(select_count==0)
         {
@@ -311,6 +324,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         if(!result&&game_turn.get_play_cards_count()!=0)
         {
             game_turn.player1.getSelectedCardsArrayList().clear();
+            Log.e("人类玩家出的牌不符合规格","");
             Toast.makeText(this, "所选牌不符合规则", Toast.LENGTH_LONG).show();
         }
         //所选的牌符合规则，出牌权跳到下一玩家
@@ -366,6 +380,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
 
     //人类玩家选择过
     public void click_pass(View view) {
+        Log.e("TAG","人类玩家选择过");
         game_turn.play_cards_count_add_one();
         game_turn.PlayingGame();
     }
@@ -380,6 +395,11 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
             game_turn.player2.getSelectedCardsArrayList().add(game_turn.player2.getArrayList().get(i));
         }*/
 
+        //测试用
+        for(int i=0;i<game_turn.getLastPlayerCardsArrayList().size();i++)
+        {
+            Log.e("BBB玩家2的上家牌：",""+game_turn.getLastPlayerCardsArrayList().get(i));
+        }
 
         ArrayList<Integer> list=game_turn.player2.getSelectedCardsArrayList();
 
@@ -390,7 +410,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         {
             //在玩家处显示过的图标，并在下次删除
             findViewById(R.id.pass2).setVisibility(View.VISIBLE);
-            Log.e("玩家2","选择过");
+            Log.e("TAG","玩家2选择过");
         }
         else
         {
@@ -398,7 +418,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
 
             for(int i=0;i<game_turn.player2.getSelectedCardsArrayList().size();i++)
             {
-                Log.e("玩家2的selectedcards",""+game_turn.player2.getSelectedCardsArrayList().get(i));
+                Log.e("BBB玩家2选择出的牌",""+game_turn.player2.getSelectedCardsArrayList().get(i));
             }
             //①先清空中间显示的牌
             middle_layout_clear(just_played_cards_layout);
@@ -481,6 +501,13 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         }*/
 
 
+        //测试用
+        for(int i=0;i<game_turn.getLastPlayerCardsArrayList().size();i++)
+        {
+            Log.e("DDD玩家3的上家牌：",""+game_turn.getLastPlayerCardsArrayList().get(i));
+        }
+
+
         ArrayList<Integer> list=game_turn.player3.getSelectedCardsArrayList();
 
         LinearLayout player3_cards_layout=findViewById(R.id.player3CardsContainer);
@@ -490,7 +517,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         {
             //在玩家处显示过的图标，并在下次删除
             findViewById(R.id.pass3).setVisibility(View.VISIBLE);
-
+            Log.e("Tag","电脑玩家3选择过");
         }
         else
         {
@@ -498,7 +525,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
 
             for(int i=0;i<game_turn.player3.getSelectedCardsArrayList().size();i++)
             {
-                Log.e("玩家3的selectedcards",""+game_turn.player3.getSelectedCardsArrayList().get(i));
+                Log.e("DDD电脑玩家3选择的牌",""+game_turn.player3.getSelectedCardsArrayList().get(i));
             }
             //①先清空中间显示的牌
             middle_layout_clear(just_played_cards_layout);
@@ -576,11 +603,16 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
     public void player4_plays_cards()
     {
         /*//测试用
-        for(int i=0;i<5;i++)
+        for(int i=0;i<5;i++)12
         {
             game_turn.player4.getSelectedCardsArrayList().add(game_turn.player4.getArrayList().get(i));
         }*/
 
+        //测试用
+        for(int i=0;i<game_turn.getLastPlayerCardsArrayList().size();i++)
+        {
+            Log.e("CCC玩家4的上家牌：",""+game_turn.getLastPlayerCardsArrayList().get(i));
+        }
 
         ArrayList<Integer> list=game_turn.player4.getSelectedCardsArrayList();
 
@@ -591,8 +623,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         {
             //在玩家处显示过的图标，并在下次删除
             findViewById(R.id.pass4).setVisibility(View.VISIBLE);
-
-
+            Log.e("Tag","电脑玩家4选择过");
         }
         else
         {
@@ -600,7 +631,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
 
             for(int i=0;i<game_turn.player4.getSelectedCardsArrayList().size();i++)
             {
-                Log.e("玩家4的selectedcards",""+game_turn.player4.getSelectedCardsArrayList().get(i));
+                Log.e("CCC玩家4选择出的牌",""+game_turn.player4.getSelectedCardsArrayList().get(i));
             }
             //①先清空中间显示的牌
             middle_layout_clear(just_played_cards_layout);

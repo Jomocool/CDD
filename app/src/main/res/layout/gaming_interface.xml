@@ -7,33 +7,69 @@
     android:background="@mipmap/gaming_interface">
 
 
-    <TextView
-        android:id="@+id/pass2"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:textColor="@color/orange"
-        android:text="过"
-        android:textSize="30dp"
+    <ImageView
+        android:id="@+id/player2_head_portrait"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@mipmap/player"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.047"></TextView>
+        app:layout_constraintVertical_bias="0.099"></ImageView>
+
+    <ImageView
+        android:id="@+id/player4_head_portrait"
+        android:layout_width="50dp"
+        android:layout_height="60dp"
+        android:src="@mipmap/player"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.264"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"></ImageView>
+
+    <ImageView
+        android:id="@+id/player3_head_portrait"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@mipmap/player"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.998"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.099"></ImageView>
+
+    <TextView
+        android:id="@+id/pass2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="过"
+        android:textColor="@color/orange"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.153"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.495"></TextView>
 
     <TextView
         android:id="@+id/pass3"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:textColor="@color/orange"
         android:text="过"
+        android:textColor="@color/orange"
         android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.859"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.047"></TextView>
+        app:layout_constraintVertical_bias="0.495"></TextView>
 
     <TextView
         android:id="@+id/pass4"
@@ -44,7 +80,7 @@
         android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.292"
+        app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.261"></TextView>
@@ -103,6 +139,7 @@
         android:layout_height="110dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="16dp"
         android:gravity="top"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -116,25 +153,25 @@
         android:id="@+id/player2CardsContainer"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:gravity="left"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.498">
-    </LinearLayout>
+        app:layout_constraintVertical_bias="0.496"></LinearLayout>
 
     <LinearLayout
         android:id="@+id/player3CardsContainer"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:gravity="right"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.498">
-    </LinearLayout>
+        app:layout_constraintVertical_bias="0.498"></LinearLayout>
 
     <LinearLayout
         android:id="@+id/JustPlayCardsContainer"
