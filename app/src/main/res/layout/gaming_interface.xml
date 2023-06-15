@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@mipmap/gaming_interface">
 
-
     <ImageView
         android:id="@+id/player2_head_portrait"
         android:layout_width="45dp"
@@ -48,7 +47,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:text="过"
-        android:textColor="@color/orange"
+        android:textColor="@color/blue"
         android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,7 +61,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:text="过"
-        android:textColor="@color/orange"
+        android:textColor="@color/blue"
         android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -76,7 +75,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:text="过"
-        android:textColor="@color/orange"
+        android:textColor="@color/blue"
         android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

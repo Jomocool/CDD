@@ -31,6 +31,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
 
     //记录要出的牌
     private ArrayList<CardImage> selectedCardImage = new ArrayList<>();
+    //private ArrayList<Integer> selectedCardArrayList=new ArrayList<>();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -217,7 +218,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
                     {
                         card_image.cancel_select();
                         card_image.offsetTopAndBottom(20);
-                        selectedCardImage.add(card_image);
+                        selectedCardImage.remove(card_image);
                         //已实现在出牌按钮点击时加入到player的SelectedCardsArrayList，这里不用加入，每次出牌时加入更方便
                         //game_turn.player1.getSelectedCardsArrayList().remove((Integer) card_image.getSerial_number());
                     }
@@ -323,8 +324,10 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         //如果不是第一次出牌，且所选的牌不符合规则，重新选择
         if(!result&&game_turn.get_play_cards_count()!=0)
         {
-            game_turn.player1.getSelectedCardsArrayList().clear();
             Log.e("人类玩家出的牌不符合规格","");
+            game_turn.player1.getSelectedCardsArrayList().clear();
+            selectedCardImage.clear();
+            Log.e("清除人类玩家选择的牌，人类玩家选择牌的个数:",""+selectedCardImage.size());
             Toast.makeText(this, "所选牌不符合规则", Toast.LENGTH_LONG).show();
         }
         //所选的牌符合规则，出牌权跳到下一玩家
@@ -352,9 +355,11 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
                 return;
             }
 
+            Log.e("人类玩家选择牌的个数:",""+selectedCardImage.size());
+
             //④制作玩家牌打出的安卓界面动画效果
             // 移除牌
-            for (int i = 0; i<selectedCardImage.size();i++)
+            for (int i = selectedCardImage.size()-1; i>=0;i--)
             {
                 CardImage image = selectedCardImage.get(i);
                 CardImage new_image=new CardImage(this,image.getSerial_number(),130);
@@ -371,6 +376,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
 
             //清空玩家选择出了的牌
             selectedCardImage.clear();
+            Log.e("清除人类玩家选择的牌，人类玩家选择牌的个数:",""+selectedCardImage.size());
 
             game_turn.play_cards_count_add_one();
 
@@ -381,6 +387,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
     //人类玩家选择过
     public void click_pass(View view) {
         Log.e("TAG","人类玩家选择过");
+        selectedCardImage.clear();
         game_turn.play_cards_count_add_one();
         game_turn.PlayingGame();
     }
