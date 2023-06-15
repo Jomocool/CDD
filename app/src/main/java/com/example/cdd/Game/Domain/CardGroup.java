@@ -28,7 +28,7 @@ public class CardGroup {
             return;
         }
 
-        cards = selectedCards;
+        cards = new ArrayList<>(selectedCards);
         //排序牌组，方便比大小
         Collections.sort(cards, new Comparator<Integer>() {
             @Override
@@ -110,10 +110,12 @@ public class CardGroup {
             }
 
             if (isSamePattern) {
-                if (isContinuous)//同花且顺子
+                if (isContinuous) {//同花且顺子
                     type = PokerType.c11111Five;
-                else//同花但不是顺子
+                }else {//同花但不是顺子
+                    maxCard = cards.get(4);
                     type = PokerType.cFive;
+                }
             } else {
                 if (isContinuous)//不同花但是顺子
                     type = PokerType.c11111;
