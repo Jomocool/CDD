@@ -177,8 +177,7 @@ public class GameTurn {
             //出牌动画
             activity.player2_plays_cards_with_delay();
             //清空人机要出的牌
-            player2.getSelectedCardsArrayList().clear();
-
+            //player2.getSelectedCardsArrayList().clear();
         }
 
         //人机3
@@ -192,8 +191,7 @@ public class GameTurn {
             //出牌动画
             activity.player3_plays_cards_with_delay();
             //清空人机要出的牌
-            player3.getSelectedCardsArrayList().clear();
-
+            //player3.getSelectedCardsArrayList().clear();
         }
 
         //人机4
@@ -207,7 +205,7 @@ public class GameTurn {
             //出牌动画
             activity.player4_plays_cards_with_delay();
             //清空人机要出的牌
-            player4.getSelectedCardsArrayList().clear();
+            //player4.getSelectedCardsArrayList().clear();
         }
     }
 
