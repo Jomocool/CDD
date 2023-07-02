@@ -1,6 +1,7 @@
 package com.example.cdd.Game.System;
 
 import android.util.Log;
+import android.view.View;
 
 import com.example.cdd.Game.Domain.CardGroup;
 import com.example.cdd.Game.Domain.Cards;
@@ -10,6 +11,7 @@ import com.example.cdd.Game.Domain.RobotPlayer;
 import com.example.cdd.Game.Rule.GameRule;
 import com.example.cdd.Game.UI.GamingInterfaceActivity;
 import com.example.cdd.Game.UI.MyObserver;
+import com.example.cdd.R;
 
 
 import java.util.ArrayList;
@@ -40,6 +42,8 @@ public class GameTurn {
         }
     }
 
+    private int last_player=0;
+
     //出牌的次数
     private int play_cards_count=0;
 
@@ -63,6 +67,61 @@ public class GameTurn {
 
     //player4得分
     int score4;
+
+    /*boolean player1_pass=false;
+    boolean player2_pass=false;
+    boolean player3_pass=false;
+    boolean player4_pass=false;*/
+
+    public int getLastPlayer()
+    {
+        return last_player;
+    }
+
+    public void setLastPlayer(int num)
+    {
+        last_player=num;
+    }
+
+    /*public void set_player1_pass(boolean b)
+    {
+        player1_pass=b;
+    }
+
+    public boolean get_player1_pass()
+    {
+        return player1_pass;
+    }
+
+    public void set_player2_pass(boolean b)
+    {
+        player2_pass=b;
+    }
+
+    public boolean get_player2_pass()
+    {
+        return player2_pass;
+    }
+
+    public void set_player3_pass(boolean b)
+    {
+        player3_pass=b;
+    }
+
+    public boolean get_player3_pass()
+    {
+        return player3_pass;
+    }
+
+    public void set_player4_pass(boolean b)
+    {
+        player4_pass=b;
+    }
+
+    public boolean get_player4_pass()
+    {
+        return player4_pass;
+    }*/
 
     public int get_play_cards_count()
     {
@@ -139,8 +198,6 @@ public class GameTurn {
             player1.setTurn(2);
             player2.setTurn(3);
         }
-
-
     }
 
     //牌局进行中
@@ -162,50 +219,81 @@ public class GameTurn {
             //设置玩家按键按钮可视化
             activity.set_selection_visible();
 
-            //界面中的点击事件实现了出牌功能(点击出牌或者不出）
-
+            //设置玩家过的文本不可见
+            activity.findViewById(R.id.pass1).setVisibility(View.INVISIBLE);
         }
 
         //人机2
-        if((play_cards_count%4)==player2.getTurn())
+        else if((play_cards_count%4)==player2.getTurn())
         {
             //根据人机算法自动获取要出的牌
-            if(play_cards_count==0)
-                player2.setSelectedCardsArrayList(player2.firstPlay());
+            if(getLastPlayer()!=2)
+            {
+                if(play_cards_count==0)
+                    player2.setSelectedCardsArrayList(player2.firstPlay());
+                else
+                    player2.setSelectedCardsArrayList(player2.getCards(LastPlayerCards));
+            }
             else
-                player2.setSelectedCardsArrayList(player2.getCards(LastPlayerCards));
+                player2.setSelectedCardsArrayList(player2.maxPlayer());
+
+            for(int i=0;i<player2.getSelectedCardsArrayList().size();i++)
+            {
+                Log.e("人机玩家2最开始选择的牌：",""+player2.getSelectedCardsArrayList().get(i));
+            }
+            Log.e("人机玩家2剩下牌的个数",""+player2.getArrayList().size());
+
             //出牌动画
             activity.player2_plays_cards_with_delay();
-            //清空人机要出的牌
-            //player2.getSelectedCardsArrayList().clear();
         }
 
         //人机3
-        if((play_cards_count%4)==player3.getTurn())
+        else if((play_cards_count%4)==player3.getTurn())
         {
             //根据人机算法自动获取要出的牌
-            if(play_cards_count==0)
-                player3.setSelectedCardsArrayList(player3.firstPlay());
+            if(getLastPlayer()!=3)
+            {
+                if(play_cards_count==0)
+                    player3.setSelectedCardsArrayList(player3.firstPlay());
+                else
+                    player3.setSelectedCardsArrayList(player3.getCards(LastPlayerCards));
+            }
             else
-                player3.setSelectedCardsArrayList(player3.getCards(LastPlayerCards));
+                player3.setSelectedCardsArrayList(player3.maxPlayer());
+
+
+            for(int i=0;i<player3.getSelectedCardsArrayList().size();i++)
+            {
+                Log.e("人机玩家3最开始选择的牌：",""+player3.getSelectedCardsArrayList().get(i));
+            }
+            Log.e("人机玩家3剩下牌的个数",""+player3.getArrayList().size());
+
             //出牌动画
             activity.player3_plays_cards_with_delay();
-            //清空人机要出的牌
-            //player3.getSelectedCardsArrayList().clear();
         }
 
         //人机4
-        if((play_cards_count%4)==player4.getTurn())
+        else if((play_cards_count%4)==player4.getTurn())
         {
             //根据人机算法自动获取要出的牌
-            if(play_cards_count==0)
-                player4.setSelectedCardsArrayList(player4.firstPlay());
+            if(getLastPlayer()!=4)
+            {
+                if(play_cards_count==0)
+                    player4.setSelectedCardsArrayList(player4.firstPlay());
+                else
+                    player4.setSelectedCardsArrayList(player4.getCards(LastPlayerCards));
+            }
             else
-                player4.setSelectedCardsArrayList(player4.getCards(LastPlayerCards));
+                player4.setSelectedCardsArrayList(player4.maxPlayer());
+
+            for(int i=0;i<player4.getSelectedCardsArrayList().size();i++)
+            {
+                Log.e("人机玩家4最开始选择的牌：",""+player4.getSelectedCardsArrayList().get(i));
+            }
+            Log.e("人机玩家4剩下牌的个数",""+player4.getArrayList().size());
+
             //出牌动画
             activity.player4_plays_cards_with_delay();
-            //清空人机要出的牌
-            //player4.getSelectedCardsArrayList().clear();
         }
     }
 

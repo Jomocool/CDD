@@ -43,46 +43,60 @@
         app:layout_constraintVertical_bias="0.099"></ImageView>
 
     <TextView
+        android:id="@+id/pass1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="过"
+        android:textColor="@color/orange"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.282"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.67"></TextView>
+
+    <TextView
         android:id="@+id/pass2"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:text="过"
-        android:textColor="@color/blue"
+        android:textColor="@color/orange"
         android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.153"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.495"></TextView>
+        app:layout_constraintVertical_bias="0.097"></TextView>
 
     <TextView
         android:id="@+id/pass3"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:text="过"
-        android:textColor="@color/blue"
+        android:textColor="@color/orange"
         android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.859"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.495"></TextView>
+        app:layout_constraintVertical_bias="0.097"></TextView>
 
     <TextView
         android:id="@+id/pass4"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:text="过"
-        android:textColor="@color/blue"
+        android:textColor="@color/orange"
         android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintHorizontal_bias="0.262"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.261"></TextView>
+        app:layout_constraintVertical_bias="0.0"></TextView>
 
     <TextView
         android:id="@+id/textView2"
@@ -90,10 +104,10 @@
         android:layout_height="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.153"
+        app:layout_constraintHorizontal_bias="0.071"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.498"></TextView>
+        app:layout_constraintVertical_bias="0.097"></TextView>
 
     <TextView
         android:id="@+id/textView4"
@@ -101,10 +115,10 @@
         android:layout_height="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintHorizontal_bias="0.262"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.261"></TextView>
+        app:layout_constraintVertical_bias="0.148"></TextView>
 
     <TextView
         android:id="@+id/textView3"
@@ -112,10 +126,10 @@
         android:layout_height="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.859"
+        app:layout_constraintHorizontal_bias="0.944"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.495"></TextView>
+        app:layout_constraintVertical_bias="0.097"></TextView>
 
     <LinearLayout
         android:id="@+id/playerCardsContainer"

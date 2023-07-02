@@ -49,6 +49,8 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         findViewById(R.id.pass3).setVisibility(View.INVISIBLE);
         findViewById(R.id.pass4).setVisibility(View.INVISIBLE);
 
+        findViewById(R.id.pass1).setVisibility(View.INVISIBLE);
+
         game_turn.PlayingGame();
     }
 
@@ -321,8 +323,8 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         CardGroup cardGroup=new CardGroup(game_turn.player1.getSelectedCardsArrayList());
         boolean result=CDDGameRule.judge(cardGroup,new CardGroup(game_turn.getLastPlayerCardsArrayList()));
 
-        //如果不是第一次出牌，且所选的牌不符合规则，重新选择
-        if(!result&&game_turn.get_play_cards_count()!=0)
+        //如果不是第一次出牌，且所选的牌不符合规则，重新选择       且        如果不是其他玩家都选择过，重新选择
+        if(!result&&game_turn.get_play_cards_count()!=0&&game_turn.getLastPlayer()!=1)
         {
             Log.e("人类玩家出的牌不符合规格","");
             game_turn.player1.getSelectedCardsArrayList().clear();
@@ -333,6 +335,9 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         //所选的牌符合规则，出牌权跳到下一玩家
         else
         {
+            //设置上一个打牌玩家
+            game_turn.setLastPlayer(1);
+
             //①先清空中间显示的牌
             middle_layout_clear(justPlayedCardLayout);
 
@@ -347,15 +352,9 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
                 Integer integer=game_turn.player1.getSelectedCardsArrayList().get(i);
                 game_turn.player1.getArrayList().remove(integer);
             }
-            //当玩家的牌数量等于0时，游戏结束
-            if(game_turn.player1.getArrayList().size()==0)
-            {
-                game_turn.setGameOver();
-                startActivity(new Intent(this,Victory.class));
-                return;
-            }
 
             Log.e("人类玩家选择牌的个数:",""+selectedCardImage.size());
+            Log.e("人类玩家剩余的牌数量",""+game_turn.player1.getArrayList().size());
 
             //④制作玩家牌打出的安卓界面动画效果
             // 移除牌
@@ -376,7 +375,32 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
 
             //清空玩家选择出了的牌
             selectedCardImage.clear();
-            Log.e("清除人类玩家选择的牌，人类玩家选择牌的个数:",""+selectedCardImage.size());
+
+            /*//当玩家的牌数量等于0时，游戏结束
+            if(game_turn.player1.getArrayList().size()==0)
+            {
+                game_turn.setGameOver();
+                startActivity(new Intent(this,Victory.class));
+                return;
+            }*/
+            if(game_turn.player1.getArrayList().size()==0)
+            {
+                Intent intent=new Intent(this,Victory.class);
+                new CountDownTimer(3000,1000)
+                {
+
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        game_turn.setGameOver();
+                        startActivity(intent);
+                    }
+                }.start();
+            }
 
             game_turn.play_cards_count_add_one();
 
@@ -387,6 +411,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
     //人类玩家选择过
     public void click_pass(View view) {
         Log.e("TAG","人类玩家选择过");
+        findViewById(R.id.pass1).setVisibility(View.VISIBLE);
         selectedCardImage.clear();
         game_turn.play_cards_count_add_one();
         game_turn.PlayingGame();
@@ -396,24 +421,18 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
     //机器人将牌这一轮要出的牌传给它的selectedCardsArrayList中
     public void player2_plays_cards()
     {
-        /*//测试用
-        for(int i=0;i<5;i++)
-        {
-            game_turn.player2.getSelectedCardsArrayList().add(game_turn.player2.getArrayList().get(i));
-        }*/
-
         //测试用
         for(int i=0;i<game_turn.getLastPlayerCardsArrayList().size();i++)
         {
             Log.e("BBB玩家2的上家牌：",""+game_turn.getLastPlayerCardsArrayList().get(i));
         }
 
-        ArrayList<Integer> list=game_turn.player2.getSelectedCardsArrayList();
+        ArrayList<Integer> list =game_turn.player2.getSelectedCardsArrayList();
 
         LinearLayout player2_cards_layout=findViewById(R.id.player2CardsContainer);
         LinearLayout just_played_cards_layout=findViewById(R.id.JustPlayCardsContainer);
 
-        if(list.size()==0)//该玩家选择过
+        if(game_turn.getLastPlayer()!=2&&list.size()==0)//该玩家选择过
         {
             //在玩家处显示过的图标，并在下次删除
             findViewById(R.id.pass2).setVisibility(View.VISIBLE);
@@ -421,12 +440,16 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         }
         else
         {
+            //设置上一个打牌玩家
+            game_turn.setLastPlayer(2);
+
             findViewById(R.id.pass2).setVisibility(View.INVISIBLE);
 
             for(int i=0;i<game_turn.player2.getSelectedCardsArrayList().size();i++)
             {
                 Log.e("BBB玩家2选择出的牌",""+game_turn.player2.getSelectedCardsArrayList().get(i));
             }
+            Log.e("BBB玩家2剩余的牌数量",""+game_turn.player2.getArrayList().size());
             //①先清空中间显示的牌
             middle_layout_clear(just_played_cards_layout);
 
@@ -438,13 +461,6 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
             for(int i=0;i<list.size();i++)
             {
                 game_turn.player2.getArrayList().remove((Integer)list.get(i));
-            }
-            //当玩家的牌数量等于0时，游戏结束
-            if(game_turn.player2.getArrayList().size()==0)
-            {
-                game_turn.setGameOver();
-                startActivity(new Intent(this, Defeat.class));
-                return;
             }
 
             //④制作电脑玩家牌打出的安卓界面动画效果
@@ -465,6 +481,32 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
 
             //清空玩家的selected_Cards数组
             game_turn.player2.getSelectedCardsArrayList().clear();
+
+            //当玩家的牌数量等于0时，游戏结束
+            /*if(game_turn.player2.getArrayList().size()==0)
+            {
+                game_turn.setGameOver();
+                startActivity(new Intent(this, Defeat.class));
+                return;
+            }*/
+            if(game_turn.player2.getArrayList().size()==0)
+            {
+                Intent intent=new Intent(this,Defeat.class);
+                new CountDownTimer(1500,1000)
+                {
+
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        game_turn.setGameOver();
+                        startActivity(intent);
+                    }
+                }.start();
+            }
         }
     }
 
@@ -472,6 +514,10 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
     {
         //设置人类玩家选择按钮不可见
         set_selection_invisible();
+
+        //设置玩家2过的文本不可见
+        findViewById(R.id.pass2).setVisibility(View.INVISIBLE);
+
         new CountDownTimer(3000,1000)
         {
             TextView textView;
@@ -501,26 +547,18 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
     //机器人将牌这一轮要出的牌传给它的selectedCardsArrayList中
     public void player3_plays_cards()
     {
-        /*//测试用
-        for(int i=0;i<5;i++)
-        {
-            game_turn.player3.getSelectedCardsArrayList().add(game_turn.player3.getArrayList().get(i));
-        }*/
-
-
         //测试用
         for(int i=0;i<game_turn.getLastPlayerCardsArrayList().size();i++)
         {
             Log.e("DDD玩家3的上家牌：",""+game_turn.getLastPlayerCardsArrayList().get(i));
         }
 
-
-        ArrayList<Integer> list=game_turn.player3.getSelectedCardsArrayList();
+        ArrayList<Integer> list =game_turn.player3.getSelectedCardsArrayList();
 
         LinearLayout player3_cards_layout=findViewById(R.id.player3CardsContainer);
         LinearLayout just_played_cards_layout=findViewById(R.id.JustPlayCardsContainer);
 
-        if(list.size()==0)//该玩家选择过
+        if(game_turn.getLastPlayer()!=3&&list.size()==0)//该玩家选择过
         {
             //在玩家处显示过的图标，并在下次删除
             findViewById(R.id.pass3).setVisibility(View.VISIBLE);
@@ -528,12 +566,16 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         }
         else
         {
+            //设置上一个打牌玩家
+            game_turn.setLastPlayer(3);
+
             findViewById(R.id.pass3).setVisibility(View.INVISIBLE);
 
             for(int i=0;i<game_turn.player3.getSelectedCardsArrayList().size();i++)
             {
                 Log.e("DDD电脑玩家3选择的牌",""+game_turn.player3.getSelectedCardsArrayList().get(i));
             }
+            Log.e("DDD玩家3剩余的牌数量",""+game_turn.player3.getArrayList().size());
             //①先清空中间显示的牌
             middle_layout_clear(just_played_cards_layout);
 
@@ -545,13 +587,6 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
             for(int i=0;i<list.size();i++)
             {
                 game_turn.player3.getArrayList().remove((Integer)list.get(i));
-            }
-            //当玩家的牌数量等于0时，游戏结束
-            if(game_turn.player3.getArrayList().size()==0)
-            {
-                game_turn.setGameOver();
-                startActivity(new Intent(this, Defeat.class));
-                return;
             }
 
             //④制作电脑玩家牌打出的安卓界面动画效果
@@ -572,6 +607,31 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
 
             //清空玩家的selected_Cards数组
             game_turn.player3.getSelectedCardsArrayList().clear();
+
+            //当玩家的牌数量等于0时，游戏结束
+            /*if(game_turn.player3.getArrayList().size()==0)
+            {
+                game_turn.setGameOver();
+                startActivity(new Intent(this, Defeat.class));
+                return;
+            }*/
+            if(game_turn.player3.getArrayList().size()==0)
+            {
+                Intent intent=new Intent(this,Defeat.class);
+                new CountDownTimer(1500,1000)
+                {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        game_turn.setGameOver();
+                        startActivity(intent);
+                    }
+                }.start();
+            }
         }
     }
 
@@ -579,6 +639,10 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
     {
         //设置人类玩家选择按钮不可见
         set_selection_invisible();
+
+        //设置玩家3过的文本不可见
+        findViewById(R.id.pass3).setVisibility(View.INVISIBLE);
+
         new CountDownTimer(3000,1000)
         {
             TextView textView;
@@ -604,17 +668,10 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         }.start();
     }
 
-
     //机器人4号打牌
     //机器人将牌这一轮要出的牌传给它的selectedCardsArrayList中
     public void player4_plays_cards()
     {
-        /*//测试用
-        for(int i=0;i<5;i++)12
-        {
-            game_turn.player4.getSelectedCardsArrayList().add(game_turn.player4.getArrayList().get(i));
-        }*/
-
         //测试用
         for(int i=0;i<game_turn.getLastPlayerCardsArrayList().size();i++)
         {
@@ -626,7 +683,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         LinearLayout player4_cards_layout=findViewById(R.id.player4CardsContainer);
         LinearLayout just_played_cards_layout=findViewById(R.id.JustPlayCardsContainer);
 
-        if(list.size()==0)//该玩家选择过
+        if(game_turn.getLastPlayer()!=4&&list.size()==0)//该玩家选择过
         {
             //在玩家处显示过的图标，并在下次删除
             findViewById(R.id.pass4).setVisibility(View.VISIBLE);
@@ -634,12 +691,17 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
         }
         else
         {
+            //设置上一个打牌玩家
+            game_turn.setLastPlayer(4);
+
             findViewById(R.id.pass3).setVisibility(View.INVISIBLE);
 
             for(int i=0;i<game_turn.player4.getSelectedCardsArrayList().size();i++)
             {
                 Log.e("CCC玩家4选择出的牌",""+game_turn.player4.getSelectedCardsArrayList().get(i));
             }
+            Log.e("CCC玩家4剩余的牌数量",""+game_turn.player4.getArrayList().size());
+
             //①先清空中间显示的牌
             middle_layout_clear(just_played_cards_layout);
 
@@ -651,13 +713,6 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
             for(int i=0;i<list.size();i++)
             {
                 game_turn.player4.getArrayList().remove((Integer)list.get(i));
-            }
-            //当玩家的牌数量等于0时，游戏结束
-            if(game_turn.player4.getArrayList().size()==0)
-            {
-                game_turn.setGameOver();
-                startActivity(new Intent(this, Defeat.class));
-                return;
             }
 
             //④制作电脑玩家牌打出的安卓界面动画效果
@@ -678,6 +733,32 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
 
             //清空玩家的selected_Cards数组
             game_turn.player4.getSelectedCardsArrayList().clear();
+
+            /*//当玩家的牌数量等于0时，游戏结束
+            if(game_turn.player4.getArrayList().size()==0)
+            {
+                game_turn.setGameOver();
+                startActivity(new Intent(this, Defeat.class));
+                return;
+            }*/
+            if(game_turn.player4.getArrayList().size()==0)
+            {
+                Intent intent=new Intent(this,Defeat.class);
+                new CountDownTimer(1500,1000)
+                {
+
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        game_turn.setGameOver();
+                        startActivity(intent);
+                    }
+                }.start();
+            }
         }
     }
 
@@ -685,6 +766,10 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
     {
         //设置人类玩家选择按钮不可见
         set_selection_invisible();
+
+        //设置玩家4过的文本不可见
+        findViewById(R.id.pass4).setVisibility(View.INVISIBLE);
+
         new CountDownTimer(3000,1000)
         {
             TextView textView;

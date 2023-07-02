@@ -134,9 +134,6 @@ public class Player
     public void setSelectedCardsArrayList(ArrayList<Integer> list)
     {
         selectedCards.clear();
-        for(int i=0;i<list.size();i++)
-        {
-            selectedCards.add(list.get(i));
-        }
+        selectedCards.addAll(list);
     }
 }
