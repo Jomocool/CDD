@@ -362,20 +362,35 @@ public class RobotPlayer extends Player{
 
         containDiamond3=findMinC11111(defaultArr);
         if(containDiamond3.size()>0&&containDiamond3.contains(1))return containDiamond3;
+        else if(containDiamond3.size()>0&&!containDiamond3.contains(1))cards_list.addAll(containDiamond3);
+
         containDiamond3=findMinCFive(defaultArr);
         if(containDiamond3.size()>0&&containDiamond3.contains(1))return containDiamond3;
+        else if(containDiamond3.size()>0&&!containDiamond3.contains(1))cards_list.addAll(containDiamond3);
+
         containDiamond3=findMinC32(defaultArr);
         if(containDiamond3.size()>0&&containDiamond3.contains(1))return containDiamond3;
+        else if(containDiamond3.size()>0&&!containDiamond3.contains(1))cards_list.addAll(containDiamond3);
+
         containDiamond3=findMinC41(defaultArr);
         if(containDiamond3.size()>0&&containDiamond3.contains(1))return containDiamond3;
+        else if(containDiamond3.size()>0&&!containDiamond3.contains(1))cards_list.addAll(containDiamond3);
+
         containDiamond3= findMinC11111Five(defaultArr);
         if(containDiamond3.size()>0&&containDiamond3.contains(1))return containDiamond3;
+        else if(containDiamond3.size()>0&&!containDiamond3.contains(1))cards_list.addAll(containDiamond3);
+
         containDiamond3=findMinC3(defaultArr);
         if(containDiamond3.size()>0&&containDiamond3.contains(1))return containDiamond3;
+        else if(containDiamond3.size()>0&&!containDiamond3.contains(1))cards_list.addAll(containDiamond3);
+
         containDiamond3=findMinC2(defaultArr);
         if(containDiamond3.size()>0&&containDiamond3.contains(1))return containDiamond3;
+        else if(containDiamond3.size()>0&&!containDiamond3.contains(1))cards_list.addAll(containDiamond3);
+
         containDiamond3=findMinC1(defaultArr);
         if(containDiamond3.size()>0&&containDiamond3.contains(1))return containDiamond3;
+        else if(containDiamond3.size()>0&&!containDiamond3.contains(1))cards_list.addAll(containDiamond3);
 
         return new ArrayList<>();
     }
