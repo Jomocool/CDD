@@ -50,6 +50,11 @@ public class GameTurn {
     //是否游戏结束
     private boolean is_GameOver=false;
 
+    boolean player1_ready=false;
+    boolean player2_ready=false;
+    boolean player3_ready=false;
+    boolean player4_ready=false;
+
     //四位玩家
     public Player player1=new Player("玩家1");
     public RobotPlayer player2=new RobotPlayer("人机2");
@@ -237,6 +242,13 @@ public class GameTurn {
             else
                 player2.setSelectedCardsArrayList(player2.maxPlayer());
 
+            //更新上次出的牌
+            if(player2.getSelectedCardsArrayList().size()!=0)
+            {
+                getLastPlayerCardsArrayList().clear();
+                getLastPlayerCardsArrayList().addAll(player2.getSelectedCardsArrayList());
+            }
+
             for(int i=0;i<player2.getSelectedCardsArrayList().size();i++)
             {
                 Log.e("人机玩家2最开始选择的牌：",""+player2.getSelectedCardsArrayList().get(i));
@@ -261,6 +273,12 @@ public class GameTurn {
             else
                 player3.setSelectedCardsArrayList(player3.maxPlayer());
 
+            //更新上次出的牌
+            if(player3.getSelectedCardsArrayList().size()!=0)
+            {
+                getLastPlayerCardsArrayList().clear();
+                getLastPlayerCardsArrayList().addAll(player3.getSelectedCardsArrayList());
+            }
 
             for(int i=0;i<player3.getSelectedCardsArrayList().size();i++)
             {
@@ -285,6 +303,13 @@ public class GameTurn {
             }
             else
                 player4.setSelectedCardsArrayList(player4.maxPlayer());
+
+            //更新上次出的牌
+            if(player4.getSelectedCardsArrayList().size()!=0)
+            {
+                getLastPlayerCardsArrayList().clear();
+                getLastPlayerCardsArrayList().addAll(player4.getSelectedCardsArrayList());
+            }
 
             for(int i=0;i<player4.getSelectedCardsArrayList().size();i++)
             {

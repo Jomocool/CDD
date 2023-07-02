@@ -411,10 +411,17 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
     //人类玩家选择过
     public void click_pass(View view) {
         Log.e("TAG","人类玩家选择过");
-        findViewById(R.id.pass1).setVisibility(View.VISIBLE);
-        selectedCardImage.clear();
-        game_turn.play_cards_count_add_one();
-        game_turn.PlayingGame();
+        if(game_turn.getLastPlayer()==1)
+        {
+            Toast.makeText(this,"您不能选择过",Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            findViewById(R.id.pass1).setVisibility(View.VISIBLE);
+            selectedCardImage.clear();
+            game_turn.play_cards_count_add_one();
+            game_turn.PlayingGame();
+        }
     }
 
     //机器人2号打牌
@@ -453,9 +460,9 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
             //①先清空中间显示的牌
             middle_layout_clear(just_played_cards_layout);
 
-            //②清空原先的上一玩家出牌数组并将该电脑玩家的出牌赋值给LastPlayerCardsArrayList
+            /*//②清空原先的上一玩家出牌数组并将该电脑玩家的出牌赋值给LastPlayerCardsArrayList
             game_turn.getLastPlayerCardsArrayList().clear();
-            game_turn.getLastPlayerCardsArrayList().addAll(list);
+            game_turn.getLastPlayerCardsArrayList().addAll(list);*/
 
             //③将电脑玩家所出的牌移除出它的serial_number数组
             for(int i=0;i<list.size();i++)
@@ -525,6 +532,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
             public void onTick(long millisUntilFinished) {
                 textView=findViewById(R.id.textView2);
                 textView.setText(millisUntilFinished/1000+"s");
+                textView.setTextSize(18);
             }
 
             @Override
@@ -579,9 +587,9 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
             //①先清空中间显示的牌
             middle_layout_clear(just_played_cards_layout);
 
-            //②清空原先的上一玩家出牌数组并将该电脑玩家的出牌赋值给LastPlayerCardsArrayList
+            /*//②清空原先的上一玩家出牌数组并将该电脑玩家的出牌赋值给LastPlayerCardsArrayList
             game_turn.getLastPlayerCardsArrayList().clear();
-            game_turn.getLastPlayerCardsArrayList().addAll(list);
+            game_turn.getLastPlayerCardsArrayList().addAll(list);*/
 
             //③将电脑玩家所出的牌移除出它的serial_number数组
             for(int i=0;i<list.size();i++)
@@ -650,6 +658,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
             public void onTick(long millisUntilFinished) {
                 textView=findViewById(R.id.textView3);
                 textView.setText(millisUntilFinished/1000+"s");
+                textView.setTextSize(18);
             }
 
             @Override
@@ -705,9 +714,9 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
             //①先清空中间显示的牌
             middle_layout_clear(just_played_cards_layout);
 
-            //②清空原先的上一玩家出牌数组并将该电脑玩家的出牌赋值给LastPlayerCardsArrayList
+            /*//②清空原先的上一玩家出牌数组并将该电脑玩家的出牌赋值给LastPlayerCardsArrayList
             game_turn.getLastPlayerCardsArrayList().clear();
-            game_turn.getLastPlayerCardsArrayList().addAll(list);
+            game_turn.getLastPlayerCardsArrayList().addAll(list);*/
 
             //③将电脑玩家所出的牌移除出它的serial_number数组
             for(int i=0;i<list.size();i++)
@@ -777,6 +786,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
             public void onTick(long millisUntilFinished) {
                 textView=findViewById(R.id.textView4);
                 textView.setText(millisUntilFinished/1000+"s");
+                textView.setTextSize(18);
             }
 
             @Override
