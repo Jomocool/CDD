@@ -386,7 +386,7 @@ public class GamingInterfaceActivity extends AppCompatActivity implements MyObse
             if(game_turn.player1.getArrayList().size()==0)
             {
                 Intent intent=new Intent(this,Victory.class);
-                new CountDownTimer(3000,1000)
+                new CountDownTimer(1500,1000)
                 {
 
                     @Override
